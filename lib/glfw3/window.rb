@@ -2,26 +2,71 @@ require 'glfw3/glfw3'
 
 module Glfw; end
 
+#
+# A GLFW window. These contain a context, optionally one shared with other
+# windows and generate events. Each window maintains its own event callbacks.
+#
+# Wraps GLFWwindow and its associated functions, for the most part.
+#
+#
+# === Event Callbacks
+#
+# All window event callbacks' first argument is the window that generated the
+# event. These event callbacks all receive the same arguments as their GLFW C
+# counterparts, so refer to the
+# {GLFW 3 documentation}[http://www.glfw.org/docs/3.0/group__input.html]
+# for that.
+#
+#
+# === User Data
+#
+# If you need to associate a particular object or value with a window, you can
+# use its #user_data attribute to store and retreive an arbitrary object for
+# the window. If you need to store multiple values with the window, you might
+# set its user data object to a Hash.
+#
 class Glfw::Window
 
+  #
+  # User data attribute, can be set to any arbitrary object. Used to associate
+  # any object with the window for later retrieval.
+  #
   attr_accessor :user_data
 
+  #
+  # Returns an array of all allocated GLFW windows.
+  #
+  # call-seq:
+  #     windows -> [Glfw::Window, ...]
+  #
   def windows
     @__windows.values
   end
 
+  #
+  # Gets the X position of the window in screen space. See also #position.
+  #
   def x
     position[0]
   end
 
+  #
+  # Gets the Y position of the window in screen space. See also #position.
+  #
   def y
     position[1]
   end
 
+  #
+  # Gets the width of the window. See also #size.
+  #
   def width
     size[0]
   end
 
+  #
+  # Gets the width of the window. See also #size.
+  #
   def height
     size[1]
   end
