@@ -4,6 +4,8 @@ module Glfw; end
 
 class Glfw::Window
 
+  attr_accessor :user_data
+
   def windows
     @__windows.values
   end
