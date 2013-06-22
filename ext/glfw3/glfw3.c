@@ -985,6 +985,8 @@ void Init_glfw3(void)
   s_glfw_videomode_klass = rb_define_class_under(s_glfw_module, "VideoMode", rb_cObject);
 
   /* Glfw::Monitor */
+  rb_define_singleton_method(s_glfw_monitor_klass, "monitors", rb_glfw_get_monitors, 0);
+  rb_define_singleton_method(s_glfw_monitor_klass, "primary_monitor", rb_glfw_get_primary_monitor, 0);
   rb_define_method(s_glfw_monitor_klass, "name", rb_monitor_name, 0);
   rb_define_method(s_glfw_monitor_klass, "position", rb_monitor_position, 0);
   rb_define_method(s_glfw_monitor_klass, "physical_size", rb_monitor_physical_size, 0);
@@ -1052,8 +1054,6 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_module, "version", rb_glfw_version, 0);
   rb_define_singleton_method(s_glfw_module, "terminate", rb_glfw_terminate, 0);
   rb_define_singleton_method(s_glfw_module, "init", rb_glfw_init, 0);
-  rb_define_singleton_method(s_glfw_module, "monitors", rb_glfw_get_monitors, 0);
-  rb_define_singleton_method(s_glfw_module, "primary_monitor", rb_glfw_get_primary_monitor, 0);
   rb_define_singleton_method(s_glfw_module, "poll_events", rb_glfw_poll_events, 0);
   rb_define_singleton_method(s_glfw_module, "wait_events", rb_glfw_wait_events, 0);
   rb_define_singleton_method(s_glfw_module, "joysitck_present", rb_glfw_joysitck_present, 1);
