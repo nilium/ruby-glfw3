@@ -1,4 +1,3 @@
-require 'pkg-config'
 require 'mkmf'
 
 $LDFLAGS += " #{`pkg-config --static --libs glfw3`}"

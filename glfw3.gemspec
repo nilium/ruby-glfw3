@@ -15,6 +15,4 @@ Gem::Specification.new { |s|
   s.extensions << 'ext/glfw3/extconf.rb'
   s.homepage    = 'https://github.com/nilium/ruby-glfw3'
   s.license     = 'Simplified BSD'
-
-  s.add_dependency 'pkg-config'
 }
