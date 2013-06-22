@@ -18,7 +18,7 @@ the gem, like so:
 After that, write a quick script to toy with it. For example:
 
     require 'glfw3'
-    require 'opengl'
+    require 'opengl-core'
 
     # Initialize GLFW 3
     Glfw.init
