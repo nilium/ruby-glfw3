@@ -33,7 +33,6 @@ static VALUE s_glfw_window_klass = Qundef;
 static VALUE s_glfw_window_internal_klass = Qundef;
 static VALUE s_glfw_monitor_klass = Qundef;
 static VALUE s_glfw_videomode_klass = Qundef;
-static VALUE s_glfw_error_klass = Qundef;
 
 
 static void rb_glfw_error_callback(int error_code, const char *description);
@@ -92,55 +91,20 @@ static VALUE rb_glfw_version(VALUE self)
 
 /* GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun); */
 
-static void rb_glfw_error_mark(rb_glfw_error_t *error)
-{
-  rb_gc_mark(error->error_code);
-  rb_gc_mark(error->description);
-}
-
-/* Glfw::Error#error_code */
-static VALUE rb_glfw_error_error_code(VALUE self)
-{
-  rb_glfw_error_t *error;
-  Data_Get_Struct(self, rb_glfw_error_t, error);
-  return error->error_code;
-}
-
-/* Glfw::Error#error_code */
-static VALUE rb_glfw_error_description(VALUE self)
-{
-  rb_glfw_error_t *error;
-  Data_Get_Struct(self, rb_glfw_error_t, error);
-  return error->description;
-}
-
-/* Glfw::Error#error_code */
-static VALUE rb_glfw_error_to_s(VALUE self)
-{
-  rb_glfw_error_t *error;
-  Data_Get_Struct(self, rb_glfw_error_t, error);
-  return rb_str_format(3, (VALUE *)error, rb_str_new2("[GLFW Error %d] %s"));
-}
-
 static void rb_glfw_error_callback(int error_code, const char *description)
 {
   VALUE lambda = rb_cvar_get(s_glfw_module, rb_intern(kRB_CVAR_GLFW_ERROR_CALLBACK));
 
-  VALUE rb_description = rb_str_new2(description);
-  VALUE rb_error_code = INT2FIX(error_code);
 
-  OBJ_FREEZE(rb_description);
-  OBJ_FREEZE(rb_error_code);
 
   if (RTEST(lambda)) {
+    VALUE rb_description = rb_str_new2(description);
+    VALUE rb_error_code = INT2FIX(error_code);
+    OBJ_FREEZE(rb_description);
+    OBJ_FREEZE(rb_error_code);
     rb_funcall(lambda, rb_intern("call"), 2, rb_error_code, rb_description);
   } else {
-    rb_glfw_error_t *error = ALLOC(rb_glfw_error_t);
-    error->error_code = rb_error_code;
-    error->description = rb_description;
-    VALUE rb_error = Data_Wrap_Struct(s_glfw_error_klass, rb_glfw_error_mark, free, error);
-    rb_obj_call_init(rb_error, 0, 0);
-    rb_exc_raise(rb_error);
+    rb_raise(rb_eRuntimeError, "GLFW Error 0x%X: %s", error_code, description);
   }
 }
 
@@ -1019,12 +983,6 @@ void Init_glfw3(void)
   s_glfw_window_klass = rb_define_class_under(s_glfw_module, "Window", rb_cObject);
   s_glfw_window_internal_klass = rb_define_class_under(s_glfw_window_klass, "InternalWindow", rb_cObject);
   s_glfw_videomode_klass = rb_define_class_under(s_glfw_module, "VideoMode", rb_cObject);
-  s_glfw_error_klass = rb_define_class_under(s_glfw_module, "Error", rb_cObject);
-
-  /* Glfw::Error */
-  rb_define_method(s_glfw_error_klass, "error_code", rb_glfw_error_error_code, 0);
-  rb_define_method(s_glfw_error_klass, "description", rb_glfw_error_description, 0);
-  rb_define_method(s_glfw_error_klass, "to_s", rb_glfw_error_to_s, 0);
 
   /* Glfw::Monitor */
   rb_define_method(s_glfw_monitor_klass, "name", rb_monitor_name, 0);
@@ -1089,6 +1047,8 @@ void Init_glfw3(void)
   rb_cvar_set(s_glfw_window_klass, rb_intern(kRB_CVAR_WINDOW_WINDOWS), rb_hash_new());
 
   /* Glfw */
+  rb_cvar_set(s_glfw_module, rb_intern(kRB_CVAR_GLFW_ERROR_CALLBACK), Qnil);
+  rb_cvar_set(s_glfw_module, rb_intern(kRB_CVAR_GLFW_MONITOR_CALLBACK), Qnil);
   rb_define_singleton_method(s_glfw_module, "version", rb_glfw_version, 0);
   rb_define_singleton_method(s_glfw_module, "terminate", rb_glfw_terminate, 0);
   rb_define_singleton_method(s_glfw_module, "init", rb_glfw_init, 0);
@@ -1096,7 +1056,6 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_module, "primary_monitor", rb_glfw_get_primary_monitor, 0);
   rb_define_singleton_method(s_glfw_module, "poll_events", rb_glfw_poll_events, 0);
   rb_define_singleton_method(s_glfw_module, "wait_events", rb_glfw_wait_events, 0);
-  // rb_define_singleton_method(s_glfw_module, "", rb_glfw_, 0);
   rb_define_singleton_method(s_glfw_module, "joysitck_present", rb_glfw_joysitck_present, 1);
   rb_define_singleton_method(s_glfw_module, "joystick_axes", rb_glfw_get_joystick_axes, 1);
   rb_define_singleton_method(s_glfw_module, "joystick_buttons", rb_glfw_get_joystick_buttons, 1);
