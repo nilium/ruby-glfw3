@@ -51,8 +51,14 @@ static VALUE NAME (VALUE self, VALUE enabled)                                 \
 }
 
 
-/* GLFWAPI int glfwInit(void); */
-
+/*
+ * Initializes GLFW. Returns true on success, false on failure.
+ *
+ * call-seq:
+ *    init -> true or false
+ *
+ * Wraps glfwInit.
+ */
 static VALUE rb_glfw_init(VALUE self)
 {
   (void)self;
@@ -66,8 +72,11 @@ static VALUE rb_glfw_init(VALUE self)
 
 
 
-/* GLFWAPI void glfwTerminate(void); */
-
+/*
+ * Terminates GLFW.
+ *
+ * Wraps glfwTerminate.
+ */
 static VALUE rb_glfw_terminate(VALUE self)
 {
   glfwTerminate();
@@ -76,8 +85,14 @@ static VALUE rb_glfw_terminate(VALUE self)
 
 
 
-/* GLFWAPI void glfwGetVersion(int* major, int* minor, int* rev); */
-
+/*
+ * Returns GLFW's version in an array.
+ *
+ * call-seq:
+ *    version -> [major, minor, revision]
+ *
+ * Wraps glfwGetVersion.
+ */
 static VALUE rb_glfw_version(VALUE self)
 {
   int major = 0;
@@ -89,13 +104,9 @@ static VALUE rb_glfw_version(VALUE self)
 
 
 
-/* GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun); */
-
 static void rb_glfw_error_callback(int error_code, const char *description)
 {
   VALUE lambda = rb_cvar_get(s_glfw_module, rb_intern(kRB_CVAR_GLFW_ERROR_CALLBACK));
-
-
 
   if (RTEST(lambda)) {
     VALUE rb_description = rb_str_new2(description);
@@ -110,8 +121,14 @@ static void rb_glfw_error_callback(int error_code, const char *description)
 
 
 
-/* GLFWAPI GLFWmonitor** glfwGetMonitors(int* count); */
-
+/*
+ * Gets an array of all currently connected monitors.
+ *
+ * call-seq:
+ *    monitors -> [Glfw::Monitor, ...]
+ *
+ * Wraps glfwGetMonitors.
+ */
 VALUE rb_glfw_get_monitors(VALUE self)
 {
   long monitor_index = 0;
@@ -128,8 +145,14 @@ VALUE rb_glfw_get_monitors(VALUE self)
 
 
 
-/* GLFWAPI GLFWmonitor* glfwGetPrimaryMonitor(void); */
-
+/*
+ * Gets the primary monitor.
+ *
+ * call-seq:
+ *    primary_monitor -> Glfw::Monitor
+ *
+ * Wraps glfwGetPrimaryMonitor.
+ */
 VALUE rb_glfw_get_primary_monitor(VALUE self)
 {
   VALUE monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, glfwGetPrimaryMonitor());
@@ -139,8 +162,14 @@ VALUE rb_glfw_get_primary_monitor(VALUE self)
 
 
 
-/* GLFWAPI void glfwGetMonitorPos(GLFWmonitor* monitor, int* xpos, int* ypos); */
-
+/*
+ * Gets the monitor's position in screen-space.
+ *
+ * call-seq:
+ *    position -> [x, y]
+ *
+ * Wraps glfwGetMonitorPos.
+ */
 VALUE rb_monitor_position(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -153,8 +182,14 @@ VALUE rb_monitor_position(VALUE self)
 
 
 
-/* GLFWAPI void glfwGetMonitorPhysicalSize(GLFWmonitor* monitor, int* width, int* height); */
-
+/*
+ * Gets the physical size of the monitor.
+ *
+ * call-seq:
+ *    physical_size -> [width, height]
+ *
+ * Wraps glfwGetMonitorPhysicalSize.
+ */
 VALUE rb_monitor_physical_size(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -167,9 +202,14 @@ VALUE rb_monitor_physical_size(VALUE self)
 
 
 
-/* GLFWAPI const char* glfwGetMonitorName(GLFWmonitor* monitor); */
-
-
+/*
+ * Gets the name of the monitor.
+ *
+ * call-seq:
+ *    name -> String
+ *
+ * Wraps glfwGetMonitorName.
+ */
 VALUE rb_monitor_name(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -178,8 +218,6 @@ VALUE rb_monitor_name(VALUE self)
 }
 
 
-
-/* GLFWAPI GLFWmonitorfun glfwSetMonitorCallback(GLFWmonitorfun cbfun); */
 
 static void rb_glfw_monitor_callback(GLFWmonitor *monitor, int message)
 {
@@ -193,8 +231,14 @@ static void rb_glfw_monitor_callback(GLFWmonitor *monitor, int message)
 
 
 
-/* GLFWAPI const GLFWvidmode* glfwGetVideoModes(GLFWmonitor* monitor, int* count); */
-
+/*
+ * The width of the video mode.
+ *
+ * call-seq:
+ *    width -> Fixed
+ *
+ * Wraps GLFWvidmode.width.
+ */
 static VALUE rb_videomode_width(VALUE self)
 {
   GLFWvidmode *mode;
@@ -202,6 +246,14 @@ static VALUE rb_videomode_width(VALUE self)
   return INT2FIX(mode->width);
 }
 
+/*
+ * The height of the video mode.
+ *
+ * call-seq:
+ *    height -> Fixed
+ *
+ * Wraps GLFWvidmode.height.
+ */
 static VALUE rb_videomode_height(VALUE self)
 {
   GLFWvidmode *mode;
@@ -209,6 +261,14 @@ static VALUE rb_videomode_height(VALUE self)
   return INT2FIX(mode->height);
 }
 
+/*
+ * The number of red bits in the video mode.
+ *
+ * call-seq:
+ *    red_bits -> Fixed
+ *
+ * Wraps GLFWvidmode.redBits.
+ */
 static VALUE rb_videomode_red_bits(VALUE self)
 {
   GLFWvidmode *mode;
@@ -216,6 +276,14 @@ static VALUE rb_videomode_red_bits(VALUE self)
   return INT2FIX(mode->redBits);
 }
 
+/*
+ * The number of green bits in the video mode.
+ *
+ * call-seq:
+ *    green_bits -> Fixed
+ *
+ * Wraps GLFWvidmode.greenBits.
+ */
 static VALUE rb_videomode_green_bits(VALUE self)
 {
   GLFWvidmode *mode;
@@ -223,6 +291,14 @@ static VALUE rb_videomode_green_bits(VALUE self)
   return INT2FIX(mode->greenBits);
 }
 
+/*
+ * The number of blue bits in the video mode.
+ *
+ * call-seq:
+ *    blue_bits -> Fixed
+ *
+ * Wraps GLFWvidmode.blueBits.
+ */
 static VALUE rb_videomode_blue_bits(VALUE self)
 {
   GLFWvidmode *mode;
@@ -230,6 +306,14 @@ static VALUE rb_videomode_blue_bits(VALUE self)
   return INT2FIX(mode->blueBits);
 }
 
+/*
+ * The video mode's refresh rate.
+ *
+ * call-seq:
+ *    refresh_rate -> Fixed
+ *
+ * Wraps GLFWvidmode.refreshRate.
+ */
 static VALUE rb_videomode_refresh_rate(VALUE self)
 {
   GLFWvidmode *mode;
@@ -237,6 +321,16 @@ static VALUE rb_videomode_refresh_rate(VALUE self)
   return INT2FIX(mode->refreshRate);
 }
 
+/*
+ * Gets an array of all video modes associated with the monitor, sorted
+ * ascending first by color depth and then the video mode's area
+ * (width x height).
+ *
+ * call-seq:
+ *    video_mode -> [Glfw::VideoMode, ...]
+ *
+ * Wraps glfwGetVideoModes.
+ */
 static VALUE rb_monitor_video_modes(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -257,8 +351,14 @@ static VALUE rb_monitor_video_modes(VALUE self)
 
 
 
-/* GLFWAPI const GLFWvidmode* glfwGetVideoMode(GLFWmonitor* monitor); */
-
+/*
+ * Gets the monitor's current video mode.
+ *
+ * call-seq:
+ *    video_mode -> Glfw::VideoMode
+ *
+ * Wraps glfwGetVideoMode.
+ */
 static VALUE rb_monitor_video_mode(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -272,8 +372,15 @@ static VALUE rb_monitor_video_mode(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetGamma(GLFWmonitor* monitor, float gamma); */
-
+/*
+ * Sets the monitor's gamma ramp to a 256-element ramp generated by the given
+ * exponent.
+ *
+ * call-seq:
+ *    set_gamma(gamma) -> self
+ *
+ * Wraps glfwSetGamma.
+ */
 static VALUE rb_monitor_set_gamma(VALUE self, VALUE gamma)
 {
   GLFWmonitor *monitor;
@@ -284,20 +391,20 @@ static VALUE rb_monitor_set_gamma(VALUE self, VALUE gamma)
 
 
 
-/* GLFWAPI const GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor* monitor); */
-
 #warning "No implementation for glfwGetGammaRamp bindings"
-
-
-
-/* GLFWAPI void glfwSetGammaRamp(GLFWmonitor* monitor, const GLFWgammaramp* ramp); */
-
 #warning "No implementation for glfwSetGammaRamp bindings"
 
 
 
-/* GLFWAPI void glfwDefaultWindowHints(void); */
-
+/*
+ * Sets the window hints to their default values. See GLFW 3 documentation for
+ * details on what those values are.
+ *
+ * call-seq:
+ *    default_window_hints() -> self
+ *
+ * Wraps glfwDefaultWindowHints.
+ */
 static VALUE rb_window_default_window_hints(VALUE self)
 {
   glfwDefaultWindowHints();
@@ -306,8 +413,14 @@ static VALUE rb_window_default_window_hints(VALUE self)
 
 
 
-/* GLFWAPI void glfwWindowHint(int target, int hint); */
-
+/*
+ * Sets a window hint to the given value.
+ *
+ * call-seq:
+ *    window_hint(target, hint) -> self
+ *
+ * Wraps glfwWindowHint.
+ */
 static VALUE rb_window_window_hint(VALUE self, VALUE target, VALUE hint)
 {
   glfwWindowHint(NUM2INT(target), NUM2INT(hint));
@@ -315,14 +428,13 @@ static VALUE rb_window_window_hint(VALUE self, VALUE target, VALUE hint)
 }
 
 
-
-/* GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor,  */
-
+// Auxiliary function for extracting a Glfw::Window object from a GLFWwindow.
 static VALUE rb_lookup_window(GLFWwindow *window)
 {
   return (VALUE)glfwGetWindowUserPointer(window);
 }
 
+// And the opposite of rb_lookup_window
 static GLFWwindow *rb_get_window(VALUE rb_window)
 {
   GLFWwindow *window = NULL;
@@ -336,11 +448,15 @@ static GLFWwindow *rb_get_window(VALUE rb_window)
   return window;
 }
 
-// static VALUE rb_window_init(int argc, VALUE *argv, VALUE self)
-// {
-//   return self;
-// }
-
+/*
+ * Creates a new window with the given parameters. If a shared window is
+ * provided, the new window will use the context of the shared window.
+ *
+ * call-seq:
+ *    new(width, height, title='', monitor=nil, shared_window=nil) -> Glfw::Window
+ *
+ * Wraps glfwCreateWindow.
+ */
 static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
 {
   ID ivar_window = rb_intern(kRB_IVAR_WINDOW_INTERNAL);
@@ -413,8 +529,11 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
 
 
 
-/* GLFWAPI void glfwDestroyWindow(GLFWwindow* window); */
-
+/*
+ * Destroys the window.
+ *
+ * Wraps glfwDestroyWindow.
+ */
 static VALUE rb_window_destroy(VALUE self)
 {
   GLFWwindow *window = rb_get_window(self);
@@ -429,8 +548,14 @@ static VALUE rb_window_destroy(VALUE self)
 
 
 
-/* GLFWAPI int glfwWindowShouldClose(GLFWwindow* window); */
-
+/*
+ * Gets the window's should-close flag.
+ *
+ * call-seq:
+ *    should_close? -> true or false
+ *
+ * Wraps glfwWindowShouldClose.
+ */
 static VALUE rb_window_should_close(VALUE self)
 {
   GLFWwindow *window = rb_get_window(self);
@@ -439,29 +564,51 @@ static VALUE rb_window_should_close(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* window, int value); */
-
+/*
+ * Sets the window's should-close flag. Ideally, the value provided should be
+ * a boolean, though it is only tested for non-nil and -false status, so it can
+ * be anything that would yield true for !!value.
+ *
+ * call-seq:
+ *    should_close=(value) -> value
+ *    should_close = value -> value
+ *
+ * Wraps glfwSetWindowShouldClose.
+ */
 static VALUE rb_window_set_should_close(VALUE self, VALUE value)
 {
   GLFWwindow *window = rb_get_window(self);
   glfwSetWindowShouldClose(window, RTEST(value) ? GL_TRUE : GL_FALSE);
-  return self;
+  return value;
 }
 
 
 
-/* GLFWAPI void glfwSetWindowTitle(GLFWwindow* window, const char* title); */
-
-static VALUE rb_window_set_title(VALUE self, VALUE title)
+/*
+ * Sets the window's title.
+ *
+ * call-seq:
+ *    title=(new_title) -> new_title
+ *    title = new_title -> new_title
+ *
+ * Wraps glfwSetWindowTitle.
+ */
+static VALUE rb_window_set_title(VALUE self, VALUE new_title)
 {
-  glfwSetWindowTitle(rb_get_window(self), StringValueCStr(title));
-  return title;
+  glfwSetWindowTitle(rb_get_window(self), StringValueCStr(new_title));
+  return new_title;
 }
 
 
 
-/* GLFWAPI void glfwGetWindowPos(GLFWwindow* window, int* xpos, int* ypos); */
-
+/*
+ * Gets the windows position.
+ *
+ * call-seq:
+ *    position -> [x, y]
+ *
+ * Wraps glfwGetWindowPos.
+ */
 static VALUE rb_window_get_position(VALUE self)
 {
   int xpos = 0;
@@ -472,8 +619,15 @@ static VALUE rb_window_get_position(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetWindowPos(GLFWwindow* window, int xpos, int ypos); */
-
+/*
+ * Moves the window to a new location (sets its position).
+ *
+ * call-seq:
+ *    set_position(x, y) -> self
+ *    move(x, y) -> self
+ *
+ * Wraps glfwSetWindowPos.
+ */
 static VALUE rb_window_set_position(VALUE self, VALUE x, VALUE y)
 {
   glfwSetWindowPos(rb_get_window(self), NUM2INT(x), NUM2INT(y));
@@ -482,8 +636,14 @@ static VALUE rb_window_set_position(VALUE self, VALUE x, VALUE y)
 
 
 
-/* GLFWAPI void glfwGetWindowSize(GLFWwindow* window, int* width, int* height); */
-
+/*
+ * Gets the window's size.
+ *
+ * call-seq:
+ *    size -> [width, height]
+ *
+ * Wraps glfwGetWindowSize.
+ */
 static VALUE rb_window_get_size(VALUE self)
 {
   int width = 0;
@@ -494,8 +654,15 @@ static VALUE rb_window_get_size(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetWindowSize(GLFWwindow* window, int width, int height); */
-
+/*
+ * Sets the window's size.
+ *
+ * call-seq:
+ *    set_size(width, height) -> self
+ *    resize(width, height) -> self
+ *
+ * Wraps glfwSetWindowSize.
+ */
 static VALUE rb_window_set_size(VALUE self, VALUE width, VALUE height)
 {
   glfwSetWindowSize(rb_get_window(self), NUM2INT(width), NUM2INT(height));
@@ -504,8 +671,14 @@ static VALUE rb_window_set_size(VALUE self, VALUE width, VALUE height)
 
 
 
-/* GLFWAPI void glfwGetFramebufferSize(GLFWwindow* window, int* width, int* height); */
-
+/*
+ * Gets the window context's framebuffer size.
+ *
+ * call-seq:
+ *    framebuffer_size -> [width, height]
+ *
+ * Wraps glfwGetFramebufferSize.
+ */
 static VALUE rb_window_get_framebuffer_size(VALUE self)
 {
   int width = 0;
@@ -516,8 +689,11 @@ static VALUE rb_window_get_framebuffer_size(VALUE self)
 
 
 
-/* GLFWAPI void glfwIconifyWindow(GLFWwindow* window); */
-
+/*
+ * Iconifies the window.
+ *
+ * Wraps glfwIconifyWindow.
+ */
 static VALUE rb_window_iconify(VALUE self)
 {
   glfwIconifyWindow(rb_get_window(self));
@@ -526,8 +702,11 @@ static VALUE rb_window_iconify(VALUE self)
 
 
 
-/* GLFWAPI void glfwRestoreWindow(GLFWwindow* window); */
-
+/*
+ * Restores the window.
+ *
+ * Wraps glfwRestoreWindow.
+ */
 static VALUE rb_window_restore(VALUE self)
 {
   glfwRestoreWindow(rb_get_window(self));
@@ -536,8 +715,11 @@ static VALUE rb_window_restore(VALUE self)
 
 
 
-/* GLFWAPI void glfwShowWindow(GLFWwindow* window); */
-
+/*
+ * Shows the window.
+ *
+ * Wraps glfwShowWindow.
+ */
 static VALUE rb_window_show(VALUE self)
 {
   glfwShowWindow(rb_get_window(self));
@@ -546,8 +728,11 @@ static VALUE rb_window_show(VALUE self)
 
 
 
-/* GLFWAPI void glfwHideWindow(GLFWwindow* window); */
-
+/*
+ * Hides the window.
+ *
+ * Wraps glfwHideWindow.
+ */
 static VALUE rb_window_hide(VALUE self)
 {
   glfwHideWindow(rb_get_window(self));
@@ -556,8 +741,14 @@ static VALUE rb_window_hide(VALUE self)
 
 
 
-/* GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* window); */
-
+/*
+ * Gets the window's monitor.
+ *
+ * call-seq:
+ *    monitor -> Glfw::Monitor
+ *
+ * Wraps glfwGetWindowMonitor.
+ */
 static VALUE rb_window_get_monitor(VALUE self)
 {
   GLFWmonitor *monitor = glfwGetWindowMonitor(rb_get_window(self));
@@ -567,14 +758,6 @@ static VALUE rb_window_get_monitor(VALUE self)
 }
 
 
-
-/* GLFWAPI int glfwGetWindowAttrib(GLFWwindow* window, int attrib); */
-
-
-
-
-
-/* GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* window, GLFWwindowposfun cbfun); */
 
 static void rb_window_window_position_callback(GLFWwindow *window, int x, int y)
 {
@@ -587,9 +770,6 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_window_position_callback, rb_window_window_
 
 
 
-
-/* GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwindowsizefun cbfun); */
-
 static void rb_window_window_size_callback(GLFWwindow *window, int width, int height)
 {
   VALUE rb_window = rb_lookup_window(window);
@@ -600,8 +780,6 @@ static void rb_window_window_size_callback(GLFWwindow *window, int width, int he
 RB_ENABLE_CALLBACK_DEF(rb_window_set_window_size_callback, rb_window_window_size_callback, glfwSetWindowSizeCallback);
 
 
-
-/* GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* window, GLFWwindowclosefun cbfun); */
 
 static void rb_window_close_callback(GLFWwindow *window)
 {
@@ -614,9 +792,6 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_close_callback, rb_window_close_callback, g
 
 
 
-
-/* GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* window, GLFWwindowrefreshfun cbfun); */
-
 static void rb_window_refresh_callback(GLFWwindow *window)
 {
   VALUE rb_window = rb_lookup_window(window);
@@ -627,8 +802,6 @@ static void rb_window_refresh_callback(GLFWwindow *window)
 RB_ENABLE_CALLBACK_DEF(rb_window_set_refresh_callback, rb_window_refresh_callback, glfwSetWindowRefreshCallback);
 
 
-
-/* GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* window, GLFWwindowfocusfun cbfun); */
 
 static void rb_window_focus_callback(GLFWwindow *window, int focused)
 {
@@ -641,8 +814,6 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_focus_callback, rb_window_focus_callback, g
 
 
 
-/* GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* window, GLFWwindowiconifyfun cbfun); */
-
 static void rb_window_iconify_callback(GLFWwindow *window, int iconified)
 {
   VALUE rb_window = rb_lookup_window(window);
@@ -652,9 +823,6 @@ static void rb_window_iconify_callback(GLFWwindow *window, int iconified)
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_iconify_callback, rb_window_iconify_callback, glfwSetWindowIconifyCallback);
 
-
-
-/* GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* window, GLFWframebuffersizefun cbfun) */
 
 
 static void rb_window_fbsize_callback(GLFWwindow *window, int width, int height)
@@ -668,8 +836,19 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_fbsize_callback, rb_window_fbsize_callback,
 
 
 
-/* GLFWAPI void glfwPollEvents(void); */
-
+/*
+ * Polls for events without blocking until an event occurs.
+ *
+ * Wraps glfwPollEvents.
+ *
+ * This would likely be called at the beginning of your main loop, like so:
+ *
+ *    loop {
+ *      Glfw.poll_events()
+ *
+ *      # ...
+ *    }
+ */
 static VALUE rb_glfw_poll_events(VALUE self)
 {
   glfwPollEvents();
@@ -678,8 +857,19 @@ static VALUE rb_glfw_poll_events(VALUE self)
 
 
 
-/* GLFWAPI void glfwWaitEvents(void); */
-
+/*
+ * Polls for events. Blocks until an event occurs.
+ *
+ * Wraps glfwWaitEvents.
+ *
+ * This would likely be called at the beginning of your main loop, like so:
+ *
+ *    loop {
+ *      Glfw.wait_events()
+ *
+ *      # ...
+ *    }
+ */
 static VALUE rb_glfw_wait_events(VALUE self)
 {
   glfwWaitEvents();
@@ -688,8 +878,14 @@ static VALUE rb_glfw_wait_events(VALUE self)
 
 
 
-/* GLFWAPI int glfwGetInputMode(GLFWwindow* window, int mode); */
-
+/*
+ * Gets the current value for the given input mode.
+ *
+ * call-seq:
+ *    get_input_mode(mode) -> Fixed
+ *
+ * Wraps glfwGetInputMode.
+ */
 static VALUE rb_window_get_input_mode(VALUE self, VALUE mode)
 {
   return INT2FIX(glfwGetInputMode(rb_get_window(self), NUM2INT(mode)));
@@ -697,8 +893,14 @@ static VALUE rb_window_get_input_mode(VALUE self, VALUE mode)
 
 
 
-/* GLFWAPI void glfwSetInputMode(GLFWwindow* window, int mode, int value); */
-
+/*
+ * Sets the value of the given input mode.
+ *
+ * call-seq:
+ *    set_input_mode(mode, value) -> self
+ *
+ * Wraps glfwSetInputMode.
+ */
 static VALUE rb_window_set_input_mode(VALUE self, VALUE mode, VALUE value)
 {
   glfwSetInputMode(rb_get_window(self), NUM2INT(mode), NUM2INT(value));
@@ -707,8 +909,14 @@ static VALUE rb_window_set_input_mode(VALUE self, VALUE mode, VALUE value)
 
 
 
-/* GLFWAPI int glfwGetKey(GLFWwindow* window, int key); */
-
+/*
+ * Gets the last-reported state of the given keyboard key for the window.
+ *
+ * call-seq:
+ *    key(key) -> Fixed
+ *
+ * Wraps glfwGetKey.
+ */
 static VALUE rb_window_get_key(VALUE self, VALUE key)
 {
   return INT2FIX(glfwGetKey(rb_get_window(self), NUM2INT(key)));
@@ -716,8 +924,14 @@ static VALUE rb_window_get_key(VALUE self, VALUE key)
 
 
 
-/* GLFWAPI int glfwGetMouseButton(GLFWwindow* window, int button); */
-
+/*
+ * Gets the last-reported state of the given mouse button for the window.
+ *
+ * call-seq:
+ *    mouse_button(key) -> Fixed
+ *
+ * Wraps glfwGetMouseButton.
+ */
 static VALUE rb_window_get_mouse_button(VALUE self, VALUE button)
 {
   return INT2FIX(glfwGetMouseButton(rb_get_window(self), NUM2INT(button)));
@@ -725,8 +939,14 @@ static VALUE rb_window_get_mouse_button(VALUE self, VALUE button)
 
 
 
-/* GLFWAPI void glfwGetCursorPos(GLFWwindow* window, double* xpos, double* ypos); */
-
+/*
+ * Gets the last-reported cursor position in the window.
+ *
+ * call-seq:
+ *    cursor_pos -> [x, y]
+ *
+ * Wraps glfwGetCursorPos.
+ */
 static VALUE rb_window_get_cursor_pos(VALUE self)
 {
   double xpos = 0;
@@ -737,8 +957,16 @@ static VALUE rb_window_get_cursor_pos(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetCursorPos(GLFWwindow* window, double xpos, double ypos); */
-
+/*
+ * Sets the position of the mouse cursor relative to the client area of the
+ * window. If the window isn't focused at the time of the call, this silently
+ * fails.
+ *
+ * call-seq:
+ *    set_cursor_pos(x, y) -> self
+ *
+ * Wraps glfwSetCursorPos.
+ */
 static VALUE rb_window_set_cursor_pos(VALUE self, VALUE x, VALUE y)
 {
   glfwSetCursorPos(rb_get_window(self), NUM2DBL(x), NUM2DBL(y));
@@ -746,8 +974,6 @@ static VALUE rb_window_set_cursor_pos(VALUE self, VALUE x, VALUE y)
 }
 
 
-
-/* GLFWAPI GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun cbfun); */
 
 static void rb_window_key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
@@ -759,8 +985,6 @@ static void rb_window_key_callback(GLFWwindow *window, int key, int scancode, in
 RB_ENABLE_CALLBACK_DEF(rb_window_set_key_callback, rb_window_key_callback, glfwSetKeyCallback);
 
 
-
-/* GLFWAPI GLFWcharfun glfwSetCharCallback(GLFWwindow* window, GLFWcharfun cbfun); */
 
 static void rb_window_char_callback(GLFWwindow *window, unsigned int code)
 {
@@ -774,8 +998,6 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_char_callback, rb_window_char_callback, glf
 
 
 
-/* GLFWAPI GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* window, GLFWmousebuttonfun cbfun); */
-
 static void rb_window_mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
   VALUE rb_window = rb_lookup_window(window);
@@ -786,8 +1008,6 @@ static void rb_window_mouse_button_callback(GLFWwindow *window, int button, int 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_mouse_button_callback, rb_window_mouse_button_callback, glfwSetMouseButtonCallback);
 
 
-
-/* GLFWAPI GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow* window, GLFWcursorposfun cbfun); */
 
 static void rb_window_cursor_position_callback(GLFWwindow *window, double x, double y)
 {
@@ -800,8 +1020,6 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_cursor_position_callback, rb_window_cursor_
 
 
 
-/* GLFWAPI GLFWcursorenterfun glfwSetCursorEnterCallback(GLFWwindow* window, GLFWcursorenterfun cbfun); */
-
 static void rb_window_cursor_enter_callback(GLFWwindow *window, int entered)
 {
   VALUE rb_window = rb_lookup_window(window);
@@ -812,8 +1030,6 @@ static void rb_window_cursor_enter_callback(GLFWwindow *window, int entered)
 RB_ENABLE_CALLBACK_DEF(rb_window_set_cursor_enter_callback, rb_window_cursor_enter_callback, glfwSetCursorEnterCallback);
 
 
-
-/* GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun cbfun); */
 
 static void rb_window_scroll_callback(GLFWwindow *window, double x, double y)
 {
@@ -827,8 +1043,14 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_scroll_callback, rb_window_scroll_callback,
 
 
 
-/* GLFWAPI int glfwJoystickPresent(int joy); */
-
+/*
+ * Returns whether the given joystick is present.
+ *
+ * call-seq:
+ *    joystick_present?(joystick) -> true or false
+ *
+ * Wraps glfwJoystickPresent.
+ */
 static VALUE rb_glfw_joystick_present(VALUE self, VALUE joystick)
 {
   return glfwJoystickPresent(NUM2INT(joystick)) ? Qtrue : Qfalse;
@@ -836,8 +1058,15 @@ static VALUE rb_glfw_joystick_present(VALUE self, VALUE joystick)
 
 
 
-/* GLFWAPI const float* glfwGetJoystickAxes(int joy, int* count); */
-
+/*
+ * Gets the values of all axes of the given joystick. Returns nil if the
+ * joystick isn't present. See #joystick_present?.
+ *
+ * call-seq:
+ *    joystick_axes(joystick) -> [Float, ...] or nil
+ *
+ * Wraps glfwGetJoystickAxes.
+ */
 static VALUE rb_glfw_get_joystick_axes(VALUE self, VALUE joystick)
 {
   VALUE rb_axes = Qnil;
@@ -854,8 +1083,15 @@ static VALUE rb_glfw_get_joystick_axes(VALUE self, VALUE joystick)
 
 
 
-/* GLFWAPI const unsigned char* glfwGetJoystickButtons(int joy, int* count); */
-
+/*
+ * Gets the button values of the given joystick. Returns nil if the joystick
+ * isn't present. See #joystick_present?.
+ *
+ * call-seq:
+ *    joystick_buttons(joystick) -> [Fixed, ...] or nil
+ *
+ * Wraps glfwGetJoystickButtons.
+ */
 static VALUE rb_glfw_get_joystick_buttons(VALUE self, VALUE joystick)
 {
   VALUE rb_buttons = Qnil;
@@ -872,8 +1108,14 @@ static VALUE rb_glfw_get_joystick_buttons(VALUE self, VALUE joystick)
 
 
 
-/* GLFWAPI const char* glfwGetJoystickName(int joy); */
-
+/*
+ * Returns the name of the given joystick.
+ *
+ * call-seq:
+ *    joystick_name(joystick) -> String
+ *
+ * Wraps glfwGetJoystickName.
+ */
 static VALUE rb_glfw_get_joystick_name(VALUE self, VALUE joystick)
 {
   const char *joy_name = glfwGetJoystickName(NUM2INT(joystick));
@@ -886,8 +1128,16 @@ static VALUE rb_glfw_get_joystick_name(VALUE self, VALUE joystick)
 
 
 
-/* GLFWAPI void glfwSetClipboardString(GLFWwindow* window, const char* string); */
-
+/*
+ * Sets the system clipboard string. The window this is set for will own the
+ * given string.
+ *
+ * call-seq:
+ *    clipboard_string=(string) -> String
+ *    clipboard_string = string -> String
+ *
+ * Wraps glfwSetClipboardString.
+ */
 static VALUE rb_window_set_clipboard_string(VALUE self, VALUE string)
 {
   glfwSetClipboardString(rb_get_window(self), StringValueCStr(string));
@@ -896,8 +1146,15 @@ static VALUE rb_window_set_clipboard_string(VALUE self, VALUE string)
 
 
 
-/* GLFWAPI const char* glfwGetClipboardString(GLFWwindow* window); */
-
+/*
+ * Gets the system clipboard's contents as a string. The window this is called
+ * from will request the clipboard contents.
+ *
+ * call-seq:
+ *    clipboard_string() -> String
+ *
+ * Wraps glfwGetClipboardString.
+ */
 static VALUE rb_window_get_clipboard_string(VALUE self)
 {
   return rb_str_new2(glfwGetClipboardString(rb_get_window(self)));
@@ -905,8 +1162,15 @@ static VALUE rb_window_get_clipboard_string(VALUE self)
 
 
 
-/* GLFWAPI double glfwGetTime(void); */
-
+/*
+ * Gets the current time in seconds. The returned time is relative to the time
+ * since GLFW was initialized unless the time has been set using #timer=.
+ *
+ * call-seq:
+ *    time -> Float
+ *
+ * Wraps glfwGetTime.
+ */
 static VALUE rb_glfw_get_time(VALUE self)
 {
   return rb_float_new(glfwGetTime());
@@ -914,8 +1178,17 @@ static VALUE rb_glfw_get_time(VALUE self)
 
 
 
-/* GLFWAPI void glfwSetTime(double time); */
-
+/*
+ * Sets the current time in seconds. If set, GLFW will continue measuring time
+ * elapsed from that time forward.
+ *
+ * In most cases, you will not need to use this.
+ *
+ * call-seq:
+ *    time = Float
+ *
+ * Wraps glfwSetTime.
+ */
 static VALUE rb_glfw_set_time(VALUE self, VALUE time_)
 {
   glfwSetTime(NUM2DBL(time_));
@@ -924,8 +1197,23 @@ static VALUE rb_glfw_set_time(VALUE self, VALUE time_)
 
 
 
-/* GLFWAPI void glfwMakeContextCurrent(GLFWwindow* window); */
-
+/*
+ * Makes the window's GL context current. You will need to call this before
+ * calling any OpenGL functions. See also ::unset_context to unset a context.
+ *
+ * Wraps glfwMakeContextCurrent(window).
+ *
+ *    # Good
+ *    window.make_context_current()
+ *    Gl.glClear(Gl::GL_COLOR_BUFFER_BIT)
+ *
+ *    # Bad
+ *    Gl.glClear(Gl::GL_COLOR_BUFFER_BIT)
+ *    window.make_context_current()
+ *
+ * Remember to make a window's context current before calling any OpenGL
+ * functions. A window's GL context may only be current in one thread at a time.
+ */
 static VALUE rb_window_make_context_current(VALUE self)
 {
   glfwMakeContextCurrent(rb_get_window(self));
@@ -934,8 +1222,27 @@ static VALUE rb_window_make_context_current(VALUE self)
 
 
 
-/* GLFWAPI GLFWwindow* glfwGetCurrentContext(void); */
+/*
+ * Unsets the current GL context.
+ *
+ * Wraps glfwMakeContextCurrent(NULL).
+ */
+static VALUE rb_window_unset_context(VALUE self)
+{
+  glfwMakeContextCurrent(NULL);
+  return self;
+}
 
+
+
+/*
+ * Gets the window for the current GL context in this thread.
+ *
+ * call-seq:
+ *    current_context() -> Glfw::Window
+ *
+ * Wraps glfwGetCurrentContext.
+ */
 static VALUE rb_window_get_current_context(VALUE self)
 {
   GLFWwindow *window = glfwGetCurrentContext();
@@ -948,8 +1255,20 @@ static VALUE rb_window_get_current_context(VALUE self)
 
 
 
-/* GLFWAPI void glfwSwapBuffers(GLFWwindow* window); */
-
+/*
+ * Swaps the front and back buffers for the window. You will typically call this
+ * at the end of your drawing routines.
+ *
+ * Wraps glfwSwapBuffers.
+ *
+ *    loop {
+ *      Glfw.poll_events()
+ *
+ *      # ...
+ *
+ *      window.swap_buffers()
+ *    }
+ */
 static VALUE rb_window_swap_buffers(VALUE self)
 {
   glfwSwapBuffers(rb_get_window(self));
@@ -958,18 +1277,38 @@ static VALUE rb_window_swap_buffers(VALUE self)
 
 
 
-/* GLFWAPI void glfwSwapInterval(int interval); */
-
-static VALUE rb_glfw_swap_interval(VALUE self)
+/*
+ * Sets the swap interval for the current context.
+ * (See Glfw::Window#make_context_current)
+ *
+ * call-seq:
+ *    swap_interval=(interval) -> self
+ *    swap_interval = interval -> self
+ *
+ * Wraps glfwSwapInterval.
+ */
+static VALUE rb_glfw_swap_interval(VALUE self, VALUE interval)
 {
   return self;
 }
 
 
 
-/* GLFWAPI int glfwExtensionSupported(const char* extension); */
-
-static VALUE rb_glfw_extension_supported(VALUE self)
+/*
+ * Retursn whether a given OpenGL or context creation API extension is supported
+ * by the current context.
+ * (See Glfw::Window#make_context_current)
+ *
+ * Bear in mind that this function does not cache its results, so calls may be
+ * expensive. If you find yourself using it, consider caching the results
+ * yourself.
+ *
+ * call-seq:
+ *    extension_supported?(extension) -> true or false
+ *
+ * Wraps glfwExtensionSupported.
+ */
+static VALUE rb_glfw_extension_supported(VALUE self, VALUE extension)
 {
   return self;
 }
@@ -1006,6 +1345,7 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_window_klass, "new", rb_window_new, -1);
   rb_define_singleton_method(s_glfw_window_klass, "window_hint", rb_window_window_hint, 2);
   rb_define_singleton_method(s_glfw_window_klass, "default_window_hints", rb_window_default_window_hints, 0);
+  rb_define_singleton_method(s_glfw_window_klass, "unset_context", rb_window_unset_context, 0);
   // rb_define_method(s_glfw_window_klass, "initialize", rb_window_init, -1);
   rb_define_method(s_glfw_window_klass, "destroy", rb_window_destroy, 0);
   rb_define_method(s_glfw_window_klass, "should_close?", rb_window_should_close, 0);
