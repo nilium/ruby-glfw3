@@ -1289,6 +1289,7 @@ static VALUE rb_window_swap_buffers(VALUE self)
  */
 static VALUE rb_glfw_swap_interval(VALUE self, VALUE interval)
 {
+  glfwSwapInterval(NUM2INT(interval));
   return self;
 }
 
@@ -1310,7 +1311,7 @@ static VALUE rb_glfw_swap_interval(VALUE self, VALUE interval)
  */
 static VALUE rb_glfw_extension_supported(VALUE self, VALUE extension)
 {
-  return self;
+  return glfwExtensionSupported(StringValueCStr(extension)) ? Qtrue : Qfalse;
 }
 
 
