@@ -829,7 +829,7 @@ RB_ENABLE_CALLBACK_DEF(rb_window_set_scroll_callback, rb_window_scroll_callback,
 
 /* GLFWAPI int glfwJoystickPresent(int joy); */
 
-static VALUE rb_glfw_joysitck_present(VALUE self, VALUE joystick)
+static VALUE rb_glfw_joystick_present(VALUE self, VALUE joystick)
 {
   return glfwJoystickPresent(NUM2INT(joystick)) ? Qtrue : Qfalse;
 }
@@ -1056,7 +1056,7 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_module, "init", rb_glfw_init, 0);
   rb_define_singleton_method(s_glfw_module, "poll_events", rb_glfw_poll_events, 0);
   rb_define_singleton_method(s_glfw_module, "wait_events", rb_glfw_wait_events, 0);
-  rb_define_singleton_method(s_glfw_module, "joysitck_present", rb_glfw_joysitck_present, 1);
+  rb_define_singleton_method(s_glfw_module, "joystick_present", rb_glfw_joystick_present, 1);
   rb_define_singleton_method(s_glfw_module, "joystick_axes", rb_glfw_get_joystick_axes, 1);
   rb_define_singleton_method(s_glfw_module, "joystick_buttons", rb_glfw_get_joystick_buttons, 1);
   rb_define_singleton_method(s_glfw_module, "joystick_name", rb_glfw_get_joystick_name, 1);
