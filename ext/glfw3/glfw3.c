@@ -1357,8 +1357,10 @@ void Init_glfw3(void)
   rb_define_method(s_glfw_window_klass, "swap_buffers", rb_window_swap_buffers, 0);
   rb_define_method(s_glfw_window_klass, "title=", rb_window_set_title, 1);
   rb_define_method(s_glfw_window_klass, "position", rb_window_get_position, 0);
+  rb_define_method(s_glfw_window_klass, "set_position", rb_window_set_position, 2);
   rb_define_method(s_glfw_window_klass, "move", rb_window_set_position, 2);
   rb_define_method(s_glfw_window_klass, "size", rb_window_get_size, 0);
+  rb_define_method(s_glfw_window_klass, "set_size", rb_window_set_size, 2);
   rb_define_method(s_glfw_window_klass, "resize", rb_window_set_size, 2);
   rb_define_method(s_glfw_window_klass, "framebuffer_size", rb_window_get_framebuffer_size, 0);
   rb_define_method(s_glfw_window_klass, "iconify", rb_window_iconify, 0);
