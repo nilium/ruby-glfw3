@@ -7,7 +7,7 @@ To install the gem, you'll need GLFW 3 built and installed where pkg-config can
 find it. You may also want to grab some [OpenGL bindings] as well.
 
 [OpenGL bindings]: https://github.com/nilium/ruby-opengl
-[GLFW3]: https://github.com/glfw/glfw
+[GLFW 3]: https://github.com/glfw/glfw
 
 Once that's taken care of, you can install it simply by building and installing
 the gem, like so:
