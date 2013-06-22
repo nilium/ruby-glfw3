@@ -11,8 +11,17 @@ Gem::Specification.new { |s|
   s.authors     = [ 'Noel Raymond Cower' ]
   s.email       = 'ncower@gmail.com'
   s.files       = Dir.glob('lib/**/*.rb') +
-                  Dir.glob('ext/**/*.{c,rb}')
+                  Dir.glob('ext/**/*.{c,rb}') +
+                  [ 'COPYING', 'README.md' ]
   s.extensions << 'ext/glfw3/extconf.rb'
   s.homepage    = 'https://github.com/nilium/ruby-glfw3'
   s.license     = 'Simplified BSD'
+  s.has_rdoc    = true
+  s.extra_rdoc_files = [
+      'README.md',
+      'COPYING'
+  ]
+  s.rdoc_options << '--title' << 'core-opengl -- OpenGL Core Profile Bindings' <<
+                    '--main' << 'README.md' <<
+                    '--line-numbers'
 }
