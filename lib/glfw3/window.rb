@@ -26,7 +26,6 @@ class Glfw::Window
 
   def key_callback=(func)
     @__key_callback = func
-    puts "Setting key callback #{!func.nil?}"
     set_key_callback__(!func.nil?)
   end
 
