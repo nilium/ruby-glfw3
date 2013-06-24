@@ -18,6 +18,7 @@ Gem::Specification.new { |s|
   s.license     = 'Simplified BSD'
   s.has_rdoc    = true
   s.extra_rdoc_files = [
+      'ext/glfw3/glfw3.c',
       'README.md',
       'COPYING'
   ]

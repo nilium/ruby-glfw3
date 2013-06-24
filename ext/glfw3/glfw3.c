@@ -452,8 +452,11 @@ static GLFWwindow *rb_get_window(VALUE rb_window)
  * Creates a new window with the given parameters. If a shared window is
  * provided, the new window will use the context of the shared window.
  *
+ * If GLFW fails to create the window or an error occurred, this function will
+ * return nil.
+ *
  * call-seq:
- *    new(width, height, title='', monitor=nil, shared_window=nil) -> Glfw::Window
+ *    new(width, height, title='', monitor=nil, shared_window=nil) -> Glfw::Window or nil
  *
  * Wraps glfwCreateWindow.
  */
@@ -494,6 +497,9 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
 
   // Create GLFW window
   window = glfwCreateWindow(width, height, title, monitor, share);
+  if (window == NULL) {
+    return Qnil;
+  }
 
   // Allocate the window wrapper (only used to store the window pointer)
   rb_window_data = Data_Wrap_Struct(s_glfw_window_internal_klass, 0, 0, window);
