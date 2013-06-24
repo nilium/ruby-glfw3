@@ -1,8 +1,8 @@
 require 'glfw3/glfw3'
 
 module Glfw
-  @@error_callback__ = nil
-  @@monitor_callback__ = nil
+  @@__error_callback = nil
+  @@__monitor_callback = nil
 
   #
   # Gets the current error callback object.
@@ -11,7 +11,7 @@ module Glfw
   #     error_callback -> obj or nil
   #
   def self.error_callback
-    @@error_callback
+    @@__error_callback
   end
 
   #
@@ -28,7 +28,7 @@ module Glfw
   #     }
   #
   def self.error_callback=(lambda)
-    @@error_callback = lambda
+    @@__error_callback = lambda
   end
 
   #
@@ -45,7 +45,7 @@ module Glfw
   #     monitor_callback -> obj or nil
   #
   def self.monitor_callback
-    @@monitor_callback
+    @@__monitor_callback
   end
 
   #
@@ -62,7 +62,7 @@ module Glfw
   #     }
   #
   def self.monitor_callback=(lambda)
-    @@monitor_callback = lambda
+    @@__monitor_callback = lambda
   end
 
   #
