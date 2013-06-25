@@ -134,11 +134,15 @@ VALUE rb_glfw_get_monitors(VALUE self)
   long monitor_index = 0;
   int num_monitors = 0;
   GLFWmonitor **monitors = glfwGetMonitors(&num_monitors);
-  VALUE monitors_out = rb_ary_new();
-  for (; num_monitors; --num_monitors, ++monitor_index) {
-    VALUE monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitors[monitor_index]);
-    rb_obj_call_init(monitor, 0, 0);
-    rb_ary_push(monitors_out, monitor);
+  VALUE monitors_out = Qnil;
+
+  if (monitors) {
+    monitors_out = rb_ary_new();
+    for (; num_monitors; --num_monitors, ++monitor_index) {
+      VALUE monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitors[monitor_index]);
+      rb_obj_call_init(monitor, 0, 0);
+      rb_ary_push(monitors_out, monitor);
+    }
   }
   return monitors_out;
 }
