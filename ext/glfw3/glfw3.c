@@ -1459,11 +1459,8 @@ void Init_glfw3(void)
   rb_define_method(s_glfw_monitor_klass, "video_modes", rb_monitor_video_modes, 0);
   rb_define_method(s_glfw_monitor_klass, "video_mode", rb_monitor_video_mode, 0);
   rb_define_method(s_glfw_monitor_klass, "set_gamma", rb_monitor_set_gamma, 1);
-  rb_define_method(s_glfw_monitor_klass, "gamma=", rb_monitor_set_gamma, 1);
   rb_define_method(s_glfw_monitor_klass, "set_gamma_ramp", rb_monitor_set_gamma_ramp, 1);
   rb_define_method(s_glfw_monitor_klass, "get_gamma_ramp", rb_monitor_get_gamma_ramp, 0);
-  rb_define_method(s_glfw_monitor_klass, "gamma_ramp=", rb_monitor_set_gamma_ramp, 1);
-  rb_define_method(s_glfw_monitor_klass, "gamma_ramp", rb_monitor_get_gamma_ramp, 0);
 
   /* Glfw::VideoMode */
   rb_define_method(s_glfw_videomode_klass, "width", rb_videomode_width, 0);
@@ -1478,21 +1475,17 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_window_klass, "window_hint", rb_window_window_hint, 2);
   rb_define_singleton_method(s_glfw_window_klass, "default_window_hints", rb_window_default_window_hints, 0);
   rb_define_singleton_method(s_glfw_window_klass, "unset_context", rb_window_unset_context, 0);
-  // rb_define_method(s_glfw_window_klass, "initialize", rb_window_init, -1);
   rb_define_method(s_glfw_window_klass, "destroy", rb_window_destroy, 0);
-  rb_define_method(s_glfw_window_klass, "should_close?", rb_window_should_close, 0);
-  rb_define_method(s_glfw_window_klass, "should_close=", rb_window_set_should_close, 1);
+  rb_define_method(s_glfw_window_klass, "get_should_close", rb_window_should_close, 0);
   rb_define_method(s_glfw_window_klass, "set_should_close", rb_window_set_should_close, 1);
   rb_define_method(s_glfw_window_klass, "current_context", rb_window_get_current_context, 0);
   rb_define_method(s_glfw_window_klass, "make_context_current", rb_window_make_context_current, 0);
   rb_define_method(s_glfw_window_klass, "swap_buffers", rb_window_swap_buffers, 0);
   rb_define_method(s_glfw_window_klass, "title=", rb_window_set_title, 1);
-  rb_define_method(s_glfw_window_klass, "position", rb_window_get_position, 0);
+  rb_define_method(s_glfw_window_klass, "get_position", rb_window_get_position, 0);
   rb_define_method(s_glfw_window_klass, "set_position", rb_window_set_position, 2);
-  rb_define_method(s_glfw_window_klass, "move", rb_window_set_position, 2);
-  rb_define_method(s_glfw_window_klass, "size", rb_window_get_size, 0);
+  rb_define_method(s_glfw_window_klass, "get_size", rb_window_get_size, 0);
   rb_define_method(s_glfw_window_klass, "set_size", rb_window_set_size, 2);
-  rb_define_method(s_glfw_window_klass, "resize", rb_window_set_size, 2);
   rb_define_method(s_glfw_window_klass, "framebuffer_size", rb_window_get_framebuffer_size, 0);
   rb_define_method(s_glfw_window_klass, "iconify", rb_window_iconify, 0);
   rb_define_method(s_glfw_window_klass, "restore", rb_window_restore, 0);
@@ -1510,7 +1503,7 @@ void Init_glfw3(void)
   rb_define_method(s_glfw_window_klass, "set_input_mode", rb_window_set_input_mode, 2);
   rb_define_method(s_glfw_window_klass, "key", rb_window_get_key, 1);
   rb_define_method(s_glfw_window_klass, "mouse_button", rb_window_get_mouse_button, 1);
-  rb_define_method(s_glfw_window_klass, "cursor_pos", rb_window_get_cursor_pos, 0);
+  rb_define_method(s_glfw_window_klass, "get_cursor_pos", rb_window_get_cursor_pos, 0);
   rb_define_method(s_glfw_window_klass, "set_cursor_pos", rb_window_set_cursor_pos, 2);
   rb_define_method(s_glfw_window_klass, "set_key_callback__", rb_window_set_key_callback, 1);
   rb_define_method(s_glfw_window_klass, "set_char_callback__", rb_window_set_char_callback, 1);
