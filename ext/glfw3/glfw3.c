@@ -401,6 +401,18 @@ static VALUE rb_monitor_set_gamma(VALUE self, VALUE gamma)
 
 
 
+/*
+ * Gets the monitor's gamma ramp and returns it as a hash of its red, green, and
+ * blue gamma ramps. By default, this might be equal to
+ * `{ :red => [], :green => [], :blue => []}`. Ramp values are in the range of
+ * 0 through 65535, or the 0 through USHRT_MAX (in C).
+ *
+ * call-seq:
+ *    get_gamma_ramp -> { :red => [...], :green => [...], :blue => [...] } or nil
+ *    gamma_ramp = -> hash or nil
+ *
+ *  Wraps glfwGetGammaRamp.
+ */
 static VALUE rb_monitor_get_gamma_ramp(VALUE self)
 {
   GLFWmonitor *monitor;
@@ -432,6 +444,27 @@ static VALUE rb_monitor_get_gamma_ramp(VALUE self)
 
 
 
+/*
+ * Sets the monitor's gamma ramp with the ramps provided in the ramp hash. The
+ * ramp hash must have arrays for :red, :green, and :blue keys. The arrays
+ * should be the same length, otherwise the shortest array length will be used.
+ *
+ * Gamma ramps should be in the range of an usngiend short, so 0 through 65535
+ * or USHRT_MAX.
+ *
+ * For example, to set a linear gamma ramp that is half as intense as what is
+ * likely your default:
+ *
+ *      ramp = (0 ... 32768).step(128).to_a
+ *      monitor.set_gamma_ramp({ :red => ramp, :green => ramp, :blue => ramp })
+ *
+ * call-seq:
+ *     set_gamma_ramp(ramp) -> self
+ *     gamma_ramp = ramp -> self
+ *
+ *  Wraps glfwSetGammaRamp.
+ *
+ */
 static VALUE rb_monitor_set_gamma_ramp(VALUE self, VALUE ramp_hash)
 {
   GLFWmonitor *monitor;
