@@ -1459,6 +1459,7 @@ void Init_glfw3(void)
   rb_define_method(s_glfw_monitor_klass, "video_modes", rb_monitor_video_modes, 0);
   rb_define_method(s_glfw_monitor_klass, "video_mode", rb_monitor_video_mode, 0);
   rb_define_method(s_glfw_monitor_klass, "set_gamma", rb_monitor_set_gamma, 1);
+  rb_define_method(s_glfw_monitor_klass, "gamma=", rb_monitor_set_gamma, 1);
   rb_define_method(s_glfw_monitor_klass, "set_gamma_ramp", rb_monitor_set_gamma_ramp, 1);
   rb_define_method(s_glfw_monitor_klass, "get_gamma_ramp", rb_monitor_get_gamma_ramp, 0);
   rb_define_method(s_glfw_monitor_klass, "gamma_ramp=", rb_monitor_set_gamma_ramp, 1);
