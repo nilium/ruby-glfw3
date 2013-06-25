@@ -768,8 +768,12 @@ static VALUE rb_window_hide(VALUE self)
 static VALUE rb_window_get_monitor(VALUE self)
 {
   GLFWmonitor *monitor = glfwGetWindowMonitor(rb_get_window(self));
-  VALUE rb_monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
-  rb_obj_call_init(rb_monitor, 0, 0);
+  VALUE rb_monitor = Qnil;
+  if (monitor != NULL) {
+    // windowed mode
+    Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
+    rb_obj_call_init(rb_monitor, 0, 0);
+  }
   return rb_monitor;
 }
 
