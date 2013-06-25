@@ -9,11 +9,15 @@ find it. You may also want to grab some [OpenGL bindings] as well.
 [OpenGL bindings]: https://github.com/nilium/ruby-opengl
 [GLFW 3]: https://github.com/glfw/glfw
 
-Once that's taken care of, you can install it simply by building and installing
-the gem, like so:
+Once that's taken care of, you can install it simply by installing the gem via RubyGems.org using
+
+    $ gem install glfw3
+
+Or by building and installing the gem, making note of the version so you know
+the gem package to install, like so:
 
     $ gem build glfw3.gemspec
-    $ gem install glfw3-0.0.1.gemspec
+    $ gem install glfw3-VERSION-HERE.gemspec
 
 After that, write a quick script to toy with it. For example:
 
