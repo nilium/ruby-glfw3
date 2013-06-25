@@ -159,9 +159,13 @@ VALUE rb_glfw_get_monitors(VALUE self)
  */
 VALUE rb_glfw_get_primary_monitor(VALUE self)
 {
-  VALUE monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, glfwGetPrimaryMonitor());
-  rb_obj_call_init(monitor, 0, 0);
-  return monitor;
+  GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+  VALUE rb_monitor = Qnil;
+  if (monitor != NULL) {
+    rb_monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
+    rb_obj_call_init(rb_monitor, 0, 0);
+  }
+  return rb_monitor;
 }
 
 
