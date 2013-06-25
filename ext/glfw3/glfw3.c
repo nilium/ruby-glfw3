@@ -221,8 +221,10 @@ VALUE rb_monitor_physical_size(VALUE self)
 VALUE rb_monitor_name(VALUE self)
 {
   GLFWmonitor *monitor;
+  const char *monitor_name = NULL;
   Data_Get_Struct(self, GLFWmonitor, monitor);
-  return rb_str_new2(glfwGetMonitorName(monitor));
+  monitor_name = glfwGetMonitorName(monitor);
+  return monitor_name ? rb_str_new2(monitor_name) : Qnil;
 }
 
 
