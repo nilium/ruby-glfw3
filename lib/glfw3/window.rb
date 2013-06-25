@@ -33,14 +33,39 @@ class Glfw::Window
   #
   attr_accessor :user_data
 
+
+
+  alias_method :should_close?, :get_should_close
+  alias_method :should_close=, :set_should_close
+
+  alias_method :cursor_pos, :get_cursor_pos
+
+  def cursor_pos=(xy)
+    set_cursor_pos(*xy)
+  end
+
+  alias_method :move, :set_position
+  alias_method :resize, :set_size
+
+  alias_method :position, :get_position
+  alias_method :size, :get_size
+
+  def position=(xy)
+    set_position(*xy)
+  end
+
+  def size=(wh)
+    set_size(*wh)
+  end
+
   #
   # Returns an array of all allocated GLFW windows.
   #
   # call-seq:
   #     windows -> [Glfw::Window, ...]
   #
-  def windows
-    @__windows.values
+  def self.windows
+    @@__windows.values
   end
 
   #
