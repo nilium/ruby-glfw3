@@ -401,8 +401,81 @@ static VALUE rb_monitor_set_gamma(VALUE self, VALUE gamma)
 
 
 
-#warning "No implementation for glfwGetGammaRamp bindings"
-#warning "No implementation for glfwSetGammaRamp bindings"
+static VALUE rb_monitor_get_gamma_ramp(VALUE self)
+{
+  GLFWmonitor *monitor;
+  const GLFWgammaramp *ramp;
+  VALUE rb_gamma_hash, rb_red, rb_green, rb_blue;
+  unsigned int ramp_index;
+  unsigned int ramp_len = ramp->size;
+
+  Data_Get_Struct(self, GLFWmonitor, monitor);
+  ramp = glfwGetGammaRamp(monitor);
+
+  rb_gamma_hash  = rb_hash_new();
+  rb_red   = rb_ary_new();
+  rb_green = rb_ary_new();
+  rb_blue  = rb_ary_new();
+
+  for (ramp_index = 0; ramp_index < ramp_len; ++ramp_index) {
+    rb_ary_push(rb_red, INT2NUM(ramp->red[ramp_index]));
+    rb_ary_push(rb_green, INT2NUM(ramp->green[ramp_index]));
+    rb_ary_push(rb_blue, INT2NUM(ramp->blue[ramp_index]));
+  }
+
+  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("red")), rb_red);
+  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("green")), rb_green);
+  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("blue")), rb_blue);
+
+  return rb_gamma_hash;
+}
+
+
+
+static VALUE rb_monitor_set_gamma_ramp(VALUE self, VALUE ramp_hash)
+{
+  GLFWmonitor *monitor;
+  GLFWgammaramp ramp;
+  VALUE rb_red, rb_green, rb_blue;
+  unsigned int ramp_index;
+  unsigned int ramp_len = 0;
+
+  Data_Get_Struct(self, GLFWmonitor, monitor);
+
+  rb_red = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("red")));
+  rb_green = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("green")));
+  rb_blue = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("blue")));
+
+  if (!(RTEST(rb_red) && RTEST(rb_green) && RTEST(rb_blue))) {
+    rb_raise(rb_eArgError, "Ramp Hash must contain :red, :green, and :blue arrays");
+  }
+
+  ramp_len = RARRAY_LEN(rb_red);
+  if ((ramp_index = (unsigned int)RARRAY_LEN(rb_green)) < ramp_len) {
+    ramp_len = ramp_index;
+  } else if ((ramp_index = (unsigned int)RARRAY_LEN(rb_blue)) < ramp_len) {
+    ramp_len = ramp_index;
+  }
+
+  unsigned short *ramp_buffer = ALLOC_N(unsigned short, 3 * ramp_len);
+  ramp.red = ramp_buffer;
+  ramp.green = &ramp_buffer[ramp_len];
+  ramp.blue = &ramp_buffer[ramp_len * 2];
+
+  for (ramp_index = 0; ramp_index < ramp_len; ++ramp_index) {
+    ramp.red[ramp_index] = rb_num2ushort(rb_ary_entry(rb_red, ramp_index));
+    ramp.green[ramp_index] = rb_num2ushort(rb_ary_entry(rb_green, ramp_index));
+    ramp.blue[ramp_index] = rb_num2ushort(rb_ary_entry(rb_blue, ramp_index));
+  }
+
+  ramp.size = ramp_len;
+
+  glfwSetGammaRamp(monitor, &ramp);
+
+  free(ramp_buffer);
+
+  return self;
+}
 
 
 
@@ -1353,6 +1426,10 @@ void Init_glfw3(void)
   rb_define_method(s_glfw_monitor_klass, "video_modes", rb_monitor_video_modes, 0);
   rb_define_method(s_glfw_monitor_klass, "video_mode", rb_monitor_video_mode, 0);
   rb_define_method(s_glfw_monitor_klass, "set_gamma", rb_monitor_set_gamma, 1);
+  rb_define_method(s_glfw_monitor_klass, "set_gamma_ramp", rb_monitor_set_gamma_ramp, 1);
+  rb_define_method(s_glfw_monitor_klass, "get_gamma_ramp", rb_monitor_get_gamma_ramp, 0);
+  rb_define_method(s_glfw_monitor_klass, "gamma_ramp=", rb_monitor_set_gamma_ramp, 1);
+  rb_define_method(s_glfw_monitor_klass, "gamma_ramp", rb_monitor_get_gamma_ramp, 0);
 
   /* Glfw::VideoMode */
   rb_define_method(s_glfw_videomode_klass, "width", rb_videomode_width, 0);
