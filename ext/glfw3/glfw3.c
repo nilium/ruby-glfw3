@@ -26,6 +26,11 @@ static const char *kRB_IVAR_WINDOW_FRAMEBUFFER_SIZE_CALLBACK_NAME  = "@__framebu
 static const char *kRB_CVAR_WINDOW_WINDOWS_NAME                    = "@@__windows";
 static const char *kRB_CVAR_GLFW_ERROR_CALLBACK_NAME               = "@@__error_callback";
 static const char *kRB_CVAR_GLFW_MONITOR_CALLBACK_NAME             = "@@__monitor_callback";
+static const char *kRB_CALL_NAME                                   = "call";
+static const char *kRB_RED_NAME                                    = "red";
+static const char *kRB_GREEN_NAME                                  = "green";
+static const char *kRB_BLUE_NAME                                   = "blue";
+
 
 static ID kRB_IVAR_WINDOW_INTERNAL;
 static ID kRB_IVAR_WINDOW_KEY_CALLBACK;
@@ -44,6 +49,11 @@ static ID kRB_IVAR_WINDOW_FRAMEBUFFER_SIZE_CALLBACK;
 static ID kRB_CVAR_WINDOW_WINDOWS;
 static ID kRB_CVAR_GLFW_ERROR_CALLBACK;
 static ID kRB_CVAR_GLFW_MONITOR_CALLBACK;
+static ID kRB_CALL;
+static ID kRB_RED;
+static ID kRB_GREEN;
+static ID kRB_BLUE;
+
 
 static VALUE s_glfw_module = Qundef;
 static VALUE s_glfw_window_klass = Qundef;
@@ -130,7 +140,7 @@ static void rb_glfw_error_callback(int error_code, const char *description)
     VALUE rb_error_code = INT2FIX(error_code);
     OBJ_FREEZE(rb_description);
     OBJ_FREEZE(rb_error_code);
-    rb_funcall(lambda, rb_intern("call"), 2, rb_error_code, rb_description);
+    rb_funcall(lambda, kRB_CALL, 2, rb_error_code, rb_description);
   } else {
     rb_raise(rb_eRuntimeError, "GLFW Error 0x%X: %s", error_code, description);
   }
@@ -252,7 +262,7 @@ static void rb_glfw_monitor_callback(GLFWmonitor *monitor, int message)
   if (RTEST(lambda)) {
     VALUE rb_monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
     rb_obj_call_init(rb_monitor, 0, 0);
-    rb_funcall(lambda, rb_intern("call"), 2, rb_monitor, INT2FIX(message));
+    rb_funcall(lambda, kRB_CALL, 2, rb_monitor, INT2FIX(message));
   }
 }
 
@@ -452,9 +462,9 @@ static VALUE rb_monitor_get_gamma_ramp(VALUE self)
     rb_ary_push(rb_blue, INT2NUM(ramp->blue[ramp_index]));
   }
 
-  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("red")), rb_red);
-  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("green")), rb_green);
-  rb_hash_aset(rb_gamma_hash, ID2SYM(rb_intern("blue")), rb_blue);
+  rb_hash_aset(rb_gamma_hash, ID2SYM(kRB_RED), rb_red);
+  rb_hash_aset(rb_gamma_hash, ID2SYM(kRB_GREEN), rb_green);
+  rb_hash_aset(rb_gamma_hash, ID2SYM(kRB_BLUE), rb_blue);
 
   return rb_gamma_hash;
 }
@@ -492,9 +502,9 @@ static VALUE rb_monitor_set_gamma_ramp(VALUE self, VALUE ramp_hash)
 
   Data_Get_Struct(self, GLFWmonitor, monitor);
 
-  rb_red = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("red")));
-  rb_green = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("green")));
-  rb_blue = rb_hash_aref(ramp_hash, ID2SYM(rb_intern("blue")));
+  rb_red = rb_hash_aref(ramp_hash, ID2SYM(kRB_RED));
+  rb_green = rb_hash_aref(ramp_hash, ID2SYM(kRB_GREEN));
+  rb_blue = rb_hash_aref(ramp_hash, ID2SYM(kRB_BLUE));
 
   if (!(RTEST(rb_red) && RTEST(rb_green) && RTEST(rb_blue))) {
     rb_raise(rb_eArgError, "Ramp Hash must contain :red, :green, and :blue arrays");
@@ -906,7 +916,7 @@ static void rb_window_window_position_callback(GLFWwindow *window, int x, int y)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_POSITION_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 3, rb_window, INT2FIX(x), INT2FIX(y));
+  rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(x), INT2FIX(y));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_window_position_callback, rb_window_window_position_callback, glfwSetWindowPosCallback);
@@ -917,7 +927,7 @@ static void rb_window_window_size_callback(GLFWwindow *window, int width, int he
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_SIZE_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 3, rb_window, INT2FIX(width), INT2FIX(height));
+  rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(width), INT2FIX(height));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_window_size_callback, rb_window_window_size_callback, glfwSetWindowSizeCallback);
@@ -928,7 +938,7 @@ static void rb_window_close_callback(GLFWwindow *window)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CLOSE_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 1, rb_window);
+  rb_funcall(rb_func, kRB_CALL, 1, rb_window);
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_close_callback, rb_window_close_callback, glfwSetWindowCloseCallback);
@@ -939,7 +949,7 @@ static void rb_window_refresh_callback(GLFWwindow *window)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_REFRESH_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 1, rb_window);
+  rb_funcall(rb_func, kRB_CALL, 1, rb_window);
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_refresh_callback, rb_window_refresh_callback, glfwSetWindowRefreshCallback);
@@ -950,7 +960,7 @@ static void rb_window_focus_callback(GLFWwindow *window, int focused)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_FOCUS_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 2, rb_window, focused ? Qtrue : Qfalse);
+  rb_funcall(rb_func, kRB_CALL, 2, rb_window, focused ? Qtrue : Qfalse);
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_focus_callback, rb_window_focus_callback, glfwSetWindowFocusCallback);
@@ -961,7 +971,7 @@ static void rb_window_iconify_callback(GLFWwindow *window, int iconified)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_ICONIFY_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 2, rb_window, iconified ? Qtrue : Qfalse);
+  rb_funcall(rb_func, kRB_CALL, 2, rb_window, iconified ? Qtrue : Qfalse);
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_iconify_callback, rb_window_iconify_callback, glfwSetWindowIconifyCallback);
@@ -972,7 +982,7 @@ static void rb_window_fbsize_callback(GLFWwindow *window, int width, int height)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_FRAMEBUFFER_SIZE_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 3, rb_window, INT2FIX(width), INT2FIX(height));
+  rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(width), INT2FIX(height));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_fbsize_callback, rb_window_fbsize_callback, glfwSetFramebufferSizeCallback);
@@ -1122,7 +1132,7 @@ static void rb_window_key_callback(GLFWwindow *window, int key, int scancode, in
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_KEY_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 5, rb_window, INT2FIX(key), INT2FIX(scancode), INT2FIX(action), INT2FIX(mods));
+  rb_funcall(rb_func, kRB_CALL, 5, rb_window, INT2FIX(key), INT2FIX(scancode), INT2FIX(action), INT2FIX(mods));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_key_callback, rb_window_key_callback, glfwSetKeyCallback);
@@ -1133,7 +1143,7 @@ static void rb_window_char_callback(GLFWwindow *window, unsigned int code)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CHAR_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 2, rb_window, UINT2NUM(code));
+  rb_funcall(rb_func, kRB_CALL, 2, rb_window, UINT2NUM(code));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_char_callback, rb_window_char_callback, glfwSetCharCallback);
@@ -1145,7 +1155,7 @@ static void rb_window_mouse_button_callback(GLFWwindow *window, int button, int 
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_MOUSE_BUTTON_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 4, rb_window, INT2FIX(button), INT2FIX(action), INT2FIX(mods));
+  rb_funcall(rb_func, kRB_CALL, 4, rb_window, INT2FIX(button), INT2FIX(action), INT2FIX(mods));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_mouse_button_callback, rb_window_mouse_button_callback, glfwSetMouseButtonCallback);
@@ -1156,7 +1166,7 @@ static void rb_window_cursor_position_callback(GLFWwindow *window, double x, dou
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CURSOR_POSITION_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 4, rb_window, rb_float_new(x), rb_float_new(y));
+  rb_funcall(rb_func, kRB_CALL, 4, rb_window, rb_float_new(x), rb_float_new(y));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_cursor_position_callback, rb_window_cursor_position_callback, glfwSetCursorPosCallback);
@@ -1167,7 +1177,7 @@ static void rb_window_cursor_enter_callback(GLFWwindow *window, int entered)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CURSOR_ENTER_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 2, rb_window, entered ? Qtrue : Qfalse);
+  rb_funcall(rb_func, kRB_CALL, 2, rb_window, entered ? Qtrue : Qfalse);
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_cursor_enter_callback, rb_window_cursor_enter_callback, glfwSetCursorEnterCallback);
@@ -1178,7 +1188,7 @@ static void rb_window_scroll_callback(GLFWwindow *window, double x, double y)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_SCROLL_CALLBACK);
-  rb_funcall(rb_func, rb_intern("call"), 4, rb_window, rb_float_new(x), rb_float_new(y));
+  rb_funcall(rb_func, kRB_CALL, 4, rb_window, rb_float_new(x), rb_float_new(y));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_scroll_callback, rb_window_scroll_callback, glfwSetScrollCallback);
@@ -1478,6 +1488,10 @@ void Init_glfw3(void)
   kRB_CVAR_WINDOW_WINDOWS                   = rb_intern(kRB_CVAR_WINDOW_WINDOWS_NAME);
   kRB_CVAR_GLFW_ERROR_CALLBACK              = rb_intern(kRB_CVAR_GLFW_ERROR_CALLBACK_NAME);
   kRB_CVAR_GLFW_MONITOR_CALLBACK            = rb_intern(kRB_CVAR_GLFW_MONITOR_CALLBACK_NAME);
+  kRB_CALL                                  = rb_intern(kRB_CALL_NAME);
+  kRB_RED                                   = rb_intern(kRB_RED_NAME);
+  kRB_GREEN                                 = rb_intern(kRB_GREEN_NAME);
+  kRB_BLUE                                  = rb_intern(kRB_BLUE_NAME);
 
   s_glfw_module = rb_define_module("Glfw");
   s_glfw_monitor_klass = rb_define_class_under(s_glfw_module, "Monitor", rb_cObject);
