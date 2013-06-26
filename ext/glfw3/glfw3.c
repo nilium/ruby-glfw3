@@ -602,11 +602,11 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
     title = StringValueCStr(rb_title);
   }
 
-  if (RTEST(rb_monitor) && rb_obj_is_instance_of(rb_monitor, s_glfw_monitor_klass)) {
+  if (RTEST(rb_monitor) && RTEST(rb_obj_is_kind_of(rb_monitor, s_glfw_monitor_klass))) {
     Data_Get_Struct(rb_monitor, GLFWmonitor, monitor);
   }
 
-  if (RTEST(rb_share) && rb_obj_is_instance_of(rb_share, s_glfw_window_klass)) {
+  if (RTEST(rb_share) && RTEST(rb_obj_is_kind_of(rb_share, s_glfw_window_klass))) {
     VALUE rb_shared_window = rb_ivar_get(rb_share, ivar_window);
     Data_Get_Struct(rb_shared_window, GLFWwindow, share);
   }
