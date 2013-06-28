@@ -114,7 +114,7 @@ class Glfw::Window
     self.char_callback = lambda(&block)
   end
 
-  def mouse_button_callback(func)
+  def mouse_button_callback=(func)
     @__mouse_button_callback = func
     set_mouse_button_callback__(!func.nil?)
   end
@@ -123,7 +123,7 @@ class Glfw::Window
     self.mouse_button_callback = lambda(&block)
   end
 
-  def cursor_position_callback(func)
+  def cursor_position_callback=(func)
     @__cursor_position_callback = func
     set_cursor_position_callback__(!func.nil?)
   end
@@ -132,7 +132,7 @@ class Glfw::Window
     self.cursor_position_callback = lambda(&block)
   end
 
-  def cursor_enter_callback(func)
+  def cursor_enter_callback=(func)
     @__cursor_enter_callback = func
     set_cursor_enter_callback__(!func.nil?)
   end
@@ -141,7 +141,7 @@ class Glfw::Window
     self.cursor_enter_callback = lambda(&block)
   end
 
-  def scroll_callback(func)
+  def scroll_callback=(func)
     @__scroll_callback = func
     set_scroll_callback__(!func.nil?)
   end
@@ -204,7 +204,7 @@ class Glfw::Window
     self.iconify_callback = lambda(&block)
   end
 
-  def framebuffer_size_callback(func)
+  def framebuffer_size_callback=(func)
     @__framebuffer_size_callback = func
     set_framebuffer_size_callback__(!func.nil?)
   end
