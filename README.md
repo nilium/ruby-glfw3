@@ -1,6 +1,11 @@
 ruby-glfw3
 ==========
 
+    $ gem install glfw3
+
+Intro
+-----
+
 [GLFW 3] bindings gem for Ruby 2.x.
 
 To install the gem, you'll need GLFW 3 built and installed where pkg-config can
