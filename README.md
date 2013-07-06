@@ -58,7 +58,7 @@ After that, write a quick script to toy with it. For example:
 License
 -------
 
-ruby-glw3 is licensed under a simplified BSD license because it seems the most
+ruby-glfw3 is licensed under a simplified BSD license because it seems the most
 reasonable. If there's a problem with that, let me know.
 
     Copyright (c) 2013, Noel Raymond Cower <ncower@gmail.com>.
