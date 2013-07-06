@@ -4,8 +4,8 @@
 
 Gem::Specification.new { |s|
   s.name        = 'glfw3'
-  s.version     = '0.4.0'
-  s.date        = '2013-06-21'
+  s.version     = '0.4.1'
+  s.date        = '2013-07-05'
   s.summary     = 'GLFW3'
   s.description = 'GLFW 3 bindings for Ruby 2.x'
   s.authors     = [ 'Noel Raymond Cower' ]
