@@ -107,7 +107,7 @@ static VALUE rb_glfw_init(VALUE self)
 static VALUE rb_glfw_terminate(VALUE self)
 {
   glfwTerminate();
-  return Qundef;
+  return self;
 }
 
 
