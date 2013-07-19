@@ -564,13 +564,13 @@ static VALUE rb_window_window_hint(VALUE self, VALUE target, VALUE hint)
 }
 
 
-// Auxiliary function for extracting a Glfw::Window object from a GLFWwindow.
+/* Auxiliary function for extracting a Glfw::Window object from a GLFWwindow. */
 static VALUE rb_lookup_window(GLFWwindow *window)
 {
   return (VALUE)glfwGetWindowUserPointer(window);
 }
 
-// And the opposite of rb_lookup_window
+/* And the opposite of rb_lookup_window */
 static GLFWwindow *rb_get_window(VALUE rb_window)
 {
   GLFWwindow *window = NULL;
@@ -609,7 +609,7 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
   GLFWmonitor *monitor = NULL;
   GLFWwindow *share = NULL;
 
-  // Grab arguments
+  /* Grab arguments */
   rb_scan_args(argc, argv, "23", &rb_width, &rb_height, &rb_title, &rb_monitor, &rb_share);
 
   width = NUM2INT(rb_width);
@@ -631,17 +631,17 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
     Data_Get_Struct(rb_shared_window, GLFWwindow, share);
   }
 
-  // Create GLFW window
+  /* Create GLFW window */
   window = glfwCreateWindow(width, height, title, monitor, share);
   if (window == NULL) {
     return Qnil;
   }
 
-  // Allocate the window wrapper (only used to store the window pointer)
+  /* Allocate the window wrapper (only used to store the window pointer) */
   rb_window_data = Data_Wrap_Struct(s_glfw_window_internal_klass, 0, 0, window);
   rb_obj_call_init(rb_window_data, 0, 0);
 
-  // Allocate the window
+  /* Allocate the window */
   rb_window = rb_obj_alloc(s_glfw_window_klass);
 
   rb_ivar_set(rb_window, ivar_window, rb_window_data);
@@ -662,7 +662,7 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
   glfwSetWindowUserPointer(window, (void *)rb_window);
   rb_obj_call_init(rb_window, 0, 0);
 
-  // Store the window so it can't go out of scope until explicitly destroyed.
+  /* Store the window so it can't go out of scope until explicitly destroyed. */
   rb_windows = rb_cvar_get(self, kRB_CVAR_WINDOW_WINDOWS);
   rb_hash_aset(rb_windows, INT2FIX((int)window), rb_window);
 
@@ -896,7 +896,7 @@ static VALUE rb_window_get_monitor(VALUE self)
   GLFWmonitor *monitor = glfwGetWindowMonitor(rb_get_window(self));
   VALUE rb_monitor = Qnil;
   if (monitor != NULL) {
-    // windowed mode
+    /* windowed mode */
     Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
     rb_obj_call_init(rb_monitor, 0, 0);
   }
@@ -1574,7 +1574,7 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_module, "swap_interval=", rb_glfw_swap_interval, 1);
   rb_define_singleton_method(s_glfw_module, "extension_supported?", rb_glfw_extension_supported, 1);
 
-  // DEFINE ALL THE THINGS
+  /* DEFINE ALL THE THINGS */
   rb_const_set(s_glfw_module, rb_intern("VERSION_MAJOR"), INT2FIX(GLFW_VERSION_MAJOR));
   rb_const_set(s_glfw_module, rb_intern("VERSION_MINOR"), INT2FIX(GLFW_VERSION_MINOR));
   rb_const_set(s_glfw_module, rb_intern("VERSION_REVISION"), INT2FIX(GLFW_VERSION_REVISION));
