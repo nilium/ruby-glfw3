@@ -2,13 +2,6 @@
 #include <GLFW/glfw3.h>
 
 
-typedef struct s_rb_glfw_error
-{
-  VALUE error_code;   // mark
-  VALUE description;  // mark
-} rb_glfw_error_t;
-
-
 static const char *kRB_IVAR_WINDOW_INTERNAL_NAME                   = "@__internal_window";
 static const char *kRB_IVAR_WINDOW_KEY_CALLBACK_NAME               = "@__key_callback";
 static const char *kRB_IVAR_WINDOW_CHAR_CALLBACK_NAME              = "@__char_callback";
