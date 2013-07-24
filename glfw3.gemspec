@@ -22,7 +22,7 @@ Gem::Specification.new { |s|
       'README.md',
       'COPYING'
   ]
-  s.rdoc_options << '--title' << 'core-opengl -- OpenGL Core Profile Bindings' <<
+  s.rdoc_options << '--title' << 'GLFW 3 Bindings' <<
                     '--main' << 'README.md' <<
                     '--line-numbers'
 }
