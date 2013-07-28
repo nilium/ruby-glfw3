@@ -152,7 +152,7 @@ class Glfw::Window
 
   def position_callback=(func)
     @__position_callback = func
-    set_position_callback__(!func.nil?)
+    set_window_position_callback__(!func.nil?)
   end
 
   def set_position_callback(&block)
@@ -161,7 +161,7 @@ class Glfw::Window
 
   def size_callback=(func)
     @__size_callback = func
-    set_size_callback__(!func.nil?)
+    set_window_size_callback__(!func.nil?)
   end
 
   def set_size_callback(&block)
@@ -206,7 +206,7 @@ class Glfw::Window
 
   def framebuffer_size_callback=(func)
     @__framebuffer_size_callback = func
-    set_framebuffer_size_callback__(!func.nil?)
+    set_fbsize_callback__(!func.nil?)
   end
 
   def set_framebuffer_size_callback(&block)
