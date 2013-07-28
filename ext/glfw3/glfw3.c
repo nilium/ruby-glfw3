@@ -1159,7 +1159,7 @@ static void rb_window_cursor_position_callback(GLFWwindow *window, double x, dou
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CURSOR_POSITION_CALLBACK);
-  rb_funcall(rb_func, kRB_CALL, 4, rb_window, rb_float_new(x), rb_float_new(y));
+  rb_funcall(rb_func, kRB_CALL, 3, rb_window, rb_float_new(x), rb_float_new(y));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_cursor_position_callback, rb_window_cursor_position_callback, glfwSetCursorPosCallback);
@@ -1181,7 +1181,7 @@ static void rb_window_scroll_callback(GLFWwindow *window, double x, double y)
 {
   VALUE rb_window = rb_lookup_window(window);
   VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_SCROLL_CALLBACK);
-  rb_funcall(rb_func, kRB_CALL, 4, rb_window, rb_float_new(x), rb_float_new(y));
+  rb_funcall(rb_func, kRB_CALL, 3, rb_window, rb_float_new(x), rb_float_new(y));
 }
 
 RB_ENABLE_CALLBACK_DEF(rb_window_set_scroll_callback, rb_window_scroll_callback, glfwSetScrollCallback);
