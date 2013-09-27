@@ -516,9 +516,9 @@ static VALUE rb_monitor_set_gamma_ramp(VALUE self, VALUE ramp_hash)
   ramp.blue = &ramp_buffer[ramp_len * 2];
 
   for (ramp_index = 0; ramp_index < ramp_len; ++ramp_index) {
-    ramp.red[ramp_index] = rb_num2ushort(rb_ary_entry(rb_red, ramp_index));
-    ramp.green[ramp_index] = rb_num2ushort(rb_ary_entry(rb_green, ramp_index));
-    ramp.blue[ramp_index] = rb_num2ushort(rb_ary_entry(rb_blue, ramp_index));
+    ramp.red[ramp_index] = rb_num2uint(rb_ary_entry(rb_red, ramp_index));
+    ramp.green[ramp_index] = rb_num2uint(rb_ary_entry(rb_green, ramp_index));
+    ramp.blue[ramp_index] = rb_num2uint(rb_ary_entry(rb_blue, ramp_index));
   }
 
   ramp.size = ramp_len;
