@@ -1517,10 +1517,10 @@ void Init_glfw3(void)
   rb_define_singleton_method(s_glfw_window_klass, "window_hint", rb_window_window_hint, 2);
   rb_define_singleton_method(s_glfw_window_klass, "default_window_hints", rb_window_default_window_hints, 0);
   rb_define_singleton_method(s_glfw_window_klass, "unset_context", rb_window_unset_context, 0);
+  rb_define_singleton_method(s_glfw_window_klass, "current_context", rb_window_get_current_context, 0);
   rb_define_method(s_glfw_window_klass, "destroy", rb_window_destroy, 0);
   rb_define_method(s_glfw_window_klass, "get_should_close", rb_window_should_close, 0);
   rb_define_method(s_glfw_window_klass, "set_should_close", rb_window_set_should_close, 1);
-  rb_define_method(s_glfw_window_klass, "current_context", rb_window_get_current_context, 0);
   rb_define_method(s_glfw_window_klass, "make_context_current", rb_window_make_context_current, 0);
   rb_define_method(s_glfw_window_klass, "swap_buffers", rb_window_swap_buffers, 0);
   rb_define_method(s_glfw_window_klass, "title=", rb_window_set_title, 1);
