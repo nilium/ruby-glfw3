@@ -1558,10 +1558,10 @@ void Init_glfw3(void)
   kRB_BLUE                                  = rb_intern(kRB_BLUE_NAME);
 
   s_glfw_module = rb_define_module("Glfw");
-  s_glfw_monitor_klass = rb_define_class_under(s_glfw_module, "Monitor", rb_cObject);
+  s_glfw_monitor_klass = rb_define_class_under(s_glfw_module, "Monitor", rb_cData);
   s_glfw_window_klass = rb_define_class_under(s_glfw_module, "Window", rb_cObject);
-  s_glfw_window_internal_klass = rb_define_class_under(s_glfw_window_klass, "InternalWindow", rb_cObject);
-  s_glfw_videomode_klass = rb_define_class_under(s_glfw_module, "VideoMode", rb_cObject);
+  s_glfw_window_internal_klass = rb_define_class_under(s_glfw_window_klass, "InternalWindow", rb_cData);
+  s_glfw_videomode_klass = rb_define_class_under(s_glfw_module, "VideoMode", rb_cData);
 
   /* Glfw::Monitor */
   rb_define_singleton_method(s_glfw_monitor_klass, "monitors", rb_glfw_get_monitors, 0);
