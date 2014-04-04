@@ -35,7 +35,7 @@ module Glfw
   # Sets the current error callback to a Proc generated from the provided block.
   #
   def self.set_error_callback(&block)
-    self.error_callback = lambda(&block)
+    self.error_callback = block
   end
 
   #
@@ -70,6 +70,6 @@ module Glfw
   # block.
   #
   def self.set_monitor_callback(&block)
-    self.monitor_callback = lambda(&block)
+    self.monitor_callback = block
   end
 end

@@ -102,7 +102,7 @@ class Glfw::Window
   end
 
   def set_key_callback(&block)
-    self.key_callback = lambda(&block)
+    self.key_callback = block
   end
 
   def char_callback=(func)
@@ -111,7 +111,7 @@ class Glfw::Window
   end
 
   def set_char_callback(&block)
-    self.char_callback = lambda(&block)
+    self.char_callback = block
   end
 
   def mouse_button_callback=(func)
@@ -120,7 +120,7 @@ class Glfw::Window
   end
 
   def set_mouse_button_callback(&block)
-    self.mouse_button_callback = lambda(&block)
+    self.mouse_button_callback = block
   end
 
   def cursor_position_callback=(func)
@@ -129,7 +129,7 @@ class Glfw::Window
   end
 
   def set_cursor_position_callback(&block)
-    self.cursor_position_callback = lambda(&block)
+    self.cursor_position_callback = block
   end
 
   def cursor_enter_callback=(func)
@@ -138,7 +138,7 @@ class Glfw::Window
   end
 
   def set_cursor_enter_callback(&block)
-    self.cursor_enter_callback = lambda(&block)
+    self.cursor_enter_callback = block
   end
 
   def scroll_callback=(func)
@@ -147,7 +147,7 @@ class Glfw::Window
   end
 
   def set_scroll_callback(&block)
-    self.scroll_callback = lambda(&block)
+    self.scroll_callback = block
   end
 
   def position_callback=(func)
@@ -156,7 +156,7 @@ class Glfw::Window
   end
 
   def set_position_callback(&block)
-    self.position_callback = lambda(&block)
+    self.position_callback = block
   end
 
   def size_callback=(func)
@@ -165,7 +165,7 @@ class Glfw::Window
   end
 
   def set_size_callback(&block)
-    self.size_callback = lambda(&block)
+    self.size_callback = block
   end
 
   def close_callback=(func)
@@ -174,7 +174,7 @@ class Glfw::Window
   end
 
   def set_close_callback(&block)
-    self.close_callback = lambda(&block)
+    self.close_callback = block
   end
 
   def refresh_callback=(func)
@@ -183,7 +183,7 @@ class Glfw::Window
   end
 
   def set_refresh_callback(&block)
-    self.refresh_callback = lambda(&block)
+    self.refresh_callback = block
   end
 
   def focus_callback=(func)
@@ -192,7 +192,7 @@ class Glfw::Window
   end
 
   def set_focus_callback(&block)
-    self.focus_callback = lambda(&block)
+    self.focus_callback = block
   end
 
   def iconify_callback=(func)
@@ -201,7 +201,7 @@ class Glfw::Window
   end
 
   def set_iconify_callback(&block)
-    self.iconify_callback = lambda(&block)
+    self.iconify_callback = block
   end
 
   def framebuffer_size_callback=(func)
@@ -210,7 +210,7 @@ class Glfw::Window
   end
 
   def set_framebuffer_size_callback(&block)
-    self.framebuffer_size_callback = lambda(&block)
+    self.framebuffer_size_callback = block
   end
 
 
