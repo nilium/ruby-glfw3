@@ -128,7 +128,7 @@ static void rb_glfw_error_callback(int error_code, const char *description)
 {
   VALUE lambda = rb_cvar_get(s_glfw_module, kRB_CVAR_GLFW_ERROR_CALLBACK);
 
-  if (RTEST(lambda)) {
+  if (rb_obj_respond_to(lambda, kRB_CALL, 0)) {
     VALUE rb_description = rb_str_new2(description);
     VALUE rb_error_code = INT2FIX(error_code);
     OBJ_FREEZE(rb_description);
@@ -252,7 +252,7 @@ static VALUE rb_monitor_name(VALUE self)
 static void rb_glfw_monitor_callback(GLFWmonitor *monitor, int message)
 {
   VALUE lambda = rb_cvar_get(s_glfw_module, kRB_CVAR_GLFW_MONITOR_CALLBACK);
-  if (RTEST(lambda)) {
+  if (rb_obj_respond_to(lambda, kRB_CALL, 0)) {
     VALUE rb_monitor = Data_Wrap_Struct(s_glfw_monitor_klass, 0, 0, monitor);
     rb_obj_call_init(rb_monitor, 0, 0);
     rb_funcall(lambda, kRB_CALL, 2, rb_monitor, INT2FIX(message));
@@ -925,7 +925,7 @@ static void rb_window_window_position_callback(GLFWwindow *window, int x, int y)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_POSITION_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(x), INT2FIX(y));
     }
   }
@@ -940,7 +940,7 @@ static void rb_window_window_size_callback(GLFWwindow *window, int width, int he
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_SIZE_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(width), INT2FIX(height));
     }
   }
@@ -955,7 +955,7 @@ static void rb_window_close_callback(GLFWwindow *window)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CLOSE_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 1, rb_window);
     }
   }
@@ -970,7 +970,7 @@ static void rb_window_refresh_callback(GLFWwindow *window)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_REFRESH_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 1, rb_window);
     }
   }
@@ -985,7 +985,7 @@ static void rb_window_focus_callback(GLFWwindow *window, int focused)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_FOCUS_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 2, rb_window, focused ? Qtrue : Qfalse);
     }
   }
@@ -1000,7 +1000,7 @@ static void rb_window_iconify_callback(GLFWwindow *window, int iconified)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_ICONIFY_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 2, rb_window, iconified ? Qtrue : Qfalse);
     }
   }
@@ -1015,7 +1015,7 @@ static void rb_window_fbsize_callback(GLFWwindow *window, int width, int height)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_FRAMEBUFFER_SIZE_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 3, rb_window, INT2FIX(width), INT2FIX(height));
     }
   }
@@ -1169,7 +1169,7 @@ static void rb_window_key_callback(GLFWwindow *window, int key, int scancode, in
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_KEY_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 5, rb_window, INT2FIX(key), INT2FIX(scancode), INT2FIX(action), INT2FIX(mods));
     }
   }
@@ -1184,7 +1184,7 @@ static void rb_window_char_callback(GLFWwindow *window, unsigned int code)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CHAR_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 2, rb_window, UINT2NUM(code));
     }
   }
@@ -1200,7 +1200,7 @@ static void rb_window_mouse_button_callback(GLFWwindow *window, int button, int 
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_MOUSE_BUTTON_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 4, rb_window, INT2FIX(button), INT2FIX(action), INT2FIX(mods));
     }
   }
@@ -1215,7 +1215,7 @@ static void rb_window_cursor_position_callback(GLFWwindow *window, double x, dou
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CURSOR_POSITION_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 3, rb_window, rb_float_new(x), rb_float_new(y));
     }
   }
@@ -1230,7 +1230,7 @@ static void rb_window_cursor_enter_callback(GLFWwindow *window, int entered)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_CURSOR_ENTER_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 2, rb_window, entered ? Qtrue : Qfalse);
     }
   }
@@ -1245,7 +1245,7 @@ static void rb_window_scroll_callback(GLFWwindow *window, double x, double y)
   VALUE rb_window = rb_lookup_window(window);
   if (RTEST(rb_window)) {
     VALUE rb_func = rb_ivar_get(rb_window, kRB_IVAR_WINDOW_SCROLL_CALLBACK);
-    if (RTEST(rb_func)) {
+    if (rb_obj_respond_to(rb_func, kRB_CALL, 0)) {
       rb_funcall(rb_func, kRB_CALL, 3, rb_window, rb_float_new(x), rb_float_new(y));
     }
   }
