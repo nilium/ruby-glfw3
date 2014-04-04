@@ -60,6 +60,9 @@ static void rb_glfw_error_callback(int error_code, const char *description);
 static void rb_glfw_monitor_callback(GLFWmonitor *monitor, int message);
 
 
+#define Q_IS_A(OBJ, KLASS) RTEST(rb_obj_is_kind_of((OBJ), (KLASS)))
+
+
 #define RB_ENABLE_CALLBACK_DEF(NAME, CALLBACK, GLFW_FUNC)                     \
 static VALUE NAME (VALUE self, VALUE enabled)                                 \
 {                                                                             \
@@ -502,13 +505,17 @@ static VALUE rb_monitor_set_gamma_ramp(VALUE self, VALUE ramp_hash)
   unsigned int ramp_len = 0;
   unsigned short *ramp_buffer = NULL;
 
+  if (!Q_IS_A(ramp_hash, rb_cHash)) {
+    rb_raise(rb_eArgError, "ramp_hash must be a Hash");
+  }
+
   Data_Get_Struct(self, GLFWmonitor, monitor);
 
   rb_red = rb_hash_aref(ramp_hash, ID2SYM(kRB_RED));
   rb_green = rb_hash_aref(ramp_hash, ID2SYM(kRB_GREEN));
   rb_blue = rb_hash_aref(ramp_hash, ID2SYM(kRB_BLUE));
 
-  if (!(RTEST(rb_red) && RTEST(rb_green) && RTEST(rb_blue))) {
+  if (!(Q_IS_A(rb_red, rb_cArray) && Q_IS_A(rb_green, rb_cArray) && Q_IS_A(rb_blue, rb_cArray))) {
     rb_raise(rb_eArgError, "Ramp Hash must contain :red, :green, and :blue arrays");
   }
 
@@ -636,11 +643,11 @@ static VALUE rb_window_new(int argc, VALUE *argv, VALUE self)
     title = StringValueCStr(rb_title);
   }
 
-  if (RTEST(rb_monitor) && RTEST(rb_obj_is_kind_of(rb_monitor, s_glfw_monitor_klass))) {
+  if (Q_IS_A(rb_monitor, s_glfw_monitor_klass)) {
     Data_Get_Struct(rb_monitor, GLFWmonitor, monitor);
   }
 
-  if (RTEST(rb_share) && RTEST(rb_obj_is_kind_of(rb_share, s_glfw_window_klass))) {
+  if (Q_IS_A(rb_share, s_glfw_window_klass)) {
     VALUE rb_shared_window = rb_ivar_get(rb_share, ivar_window);
     Data_Get_Struct(rb_shared_window, GLFWwindow, share);
   }
