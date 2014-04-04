@@ -1,6 +1,7 @@
 #include "ruby.h"
 #include <GLFW/glfw3.h>
 
+void Init_glfw3(void);
 
 static const char *kRB_IVAR_WINDOW_INTERNAL_NAME                   = "@__internal_window";
 static const char *kRB_IVAR_WINDOW_KEY_CALLBACK_NAME               = "@__key_callback";
