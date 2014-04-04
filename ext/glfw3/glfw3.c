@@ -82,7 +82,6 @@ static VALUE NAME (VALUE self, VALUE enabled)                                 \
  */
 static VALUE rb_glfw_init(VALUE self)
 {
-  (void)self;
   VALUE result = glfwInit() ? Qtrue : Qfalse;
   if (result == Qtrue) {
     glfwSetMonitorCallback(rb_glfw_monitor_callback);
