@@ -98,7 +98,7 @@ class Glfw::Window
 
   def key_callback=(func)
     @__key_callback = func
-    set_key_callback__(!func.nil?)
+    set_key_callback__(func.respond_to?(:call))
   end
 
   def set_key_callback(&block)
@@ -107,7 +107,7 @@ class Glfw::Window
 
   def char_callback=(func)
     @__char_callback = func
-    set_char_callback__(!func.nil?)
+    set_char_callback__(func.respond_to?(:call))
   end
 
   def set_char_callback(&block)
@@ -116,7 +116,7 @@ class Glfw::Window
 
   def mouse_button_callback=(func)
     @__mouse_button_callback = func
-    set_mouse_button_callback__(!func.nil?)
+    set_mouse_button_callback__(func.respond_to?(:call))
   end
 
   def set_mouse_button_callback(&block)
@@ -125,7 +125,7 @@ class Glfw::Window
 
   def cursor_position_callback=(func)
     @__cursor_position_callback = func
-    set_cursor_position_callback__(!func.nil?)
+    set_cursor_position_callback__(func.respond_to?(:call))
   end
 
   def set_cursor_position_callback(&block)
@@ -134,7 +134,7 @@ class Glfw::Window
 
   def cursor_enter_callback=(func)
     @__cursor_enter_callback = func
-    set_cursor_enter_callback__(!func.nil?)
+    set_cursor_enter_callback__(func.respond_to?(:call))
   end
 
   def set_cursor_enter_callback(&block)
@@ -143,7 +143,7 @@ class Glfw::Window
 
   def scroll_callback=(func)
     @__scroll_callback = func
-    set_scroll_callback__(!func.nil?)
+    set_scroll_callback__(func.respond_to?(:call))
   end
 
   def set_scroll_callback(&block)
@@ -152,7 +152,7 @@ class Glfw::Window
 
   def position_callback=(func)
     @__position_callback = func
-    set_window_position_callback__(!func.nil?)
+    set_window_position_callback__(func.respond_to?(:call))
   end
 
   def set_position_callback(&block)
@@ -161,7 +161,7 @@ class Glfw::Window
 
   def size_callback=(func)
     @__size_callback = func
-    set_window_size_callback__(!func.nil?)
+    set_window_size_callback__(func.respond_to?(:call))
   end
 
   def set_size_callback(&block)
@@ -170,7 +170,7 @@ class Glfw::Window
 
   def close_callback=(func)
     @__close_callback = func
-    set_close_callback__(!func.nil?)
+    set_close_callback__(func.respond_to?(:call))
   end
 
   def set_close_callback(&block)
@@ -179,7 +179,7 @@ class Glfw::Window
 
   def refresh_callback=(func)
     @__refresh_callback = func
-    set_refresh_callback__(!func.nil?)
+    set_refresh_callback__(func.respond_to?(:call))
   end
 
   def set_refresh_callback(&block)
@@ -188,7 +188,7 @@ class Glfw::Window
 
   def focus_callback=(func)
     @__focus_callback = func
-    set_focus_callback__(!func.nil?)
+    set_focus_callback__(func.respond_to?(:call))
   end
 
   def set_focus_callback(&block)
@@ -197,7 +197,7 @@ class Glfw::Window
 
   def iconify_callback=(func)
     @__iconify_callback = func
-    set_iconify_callback__(!func.nil?)
+    set_iconify_callback__(func.respond_to?(:call))
   end
 
   def set_iconify_callback(&block)
@@ -206,7 +206,7 @@ class Glfw::Window
 
   def framebuffer_size_callback=(func)
     @__framebuffer_size_callback = func
-    set_fbsize_callback__(!func.nil?)
+    set_fbsize_callback__(func.respond_to?(:call))
   end
 
   def set_framebuffer_size_callback(&block)
