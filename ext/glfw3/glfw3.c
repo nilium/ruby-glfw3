@@ -149,7 +149,7 @@ static void rb_glfw_error_callback(int error_code, const char *description)
  *
  * Wraps glfwGetMonitors.
  */
-VALUE rb_glfw_get_monitors(VALUE self)
+static VALUE rb_glfw_get_monitors(VALUE self)
 {
   long monitor_index = 0;
   int num_monitors = 0;
@@ -177,7 +177,7 @@ VALUE rb_glfw_get_monitors(VALUE self)
  *
  * Wraps glfwGetPrimaryMonitor.
  */
-VALUE rb_glfw_get_primary_monitor(VALUE self)
+static VALUE rb_glfw_get_primary_monitor(VALUE self)
 {
   GLFWmonitor *monitor = glfwGetPrimaryMonitor();
   VALUE rb_monitor = Qnil;
@@ -198,7 +198,7 @@ VALUE rb_glfw_get_primary_monitor(VALUE self)
  *
  * Wraps glfwGetMonitorPos.
  */
-VALUE rb_monitor_position(VALUE self)
+static VALUE rb_monitor_position(VALUE self)
 {
   GLFWmonitor *monitor;
   Data_Get_Struct(self, GLFWmonitor, monitor);
@@ -218,7 +218,7 @@ VALUE rb_monitor_position(VALUE self)
  *
  * Wraps glfwGetMonitorPhysicalSize.
  */
-VALUE rb_monitor_physical_size(VALUE self)
+static VALUE rb_monitor_physical_size(VALUE self)
 {
   GLFWmonitor *monitor;
   Data_Get_Struct(self, GLFWmonitor, monitor);
@@ -238,7 +238,7 @@ VALUE rb_monitor_physical_size(VALUE self)
  *
  * Wraps glfwGetMonitorName.
  */
-VALUE rb_monitor_name(VALUE self)
+static VALUE rb_monitor_name(VALUE self)
 {
   GLFWmonitor *monitor;
   const char *monitor_name = NULL;
