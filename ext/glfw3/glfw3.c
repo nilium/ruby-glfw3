@@ -455,6 +455,10 @@ static VALUE rb_monitor_get_gamma_ramp(VALUE self)
   Data_Get_Struct(self, GLFWmonitor, monitor);
   ramp = glfwGetGammaRamp(monitor);
 
+  if (ramp == NULL) {
+    return Qnil;
+  }
+
   rb_gamma_hash  = rb_hash_new();
   rb_red   = rb_ary_new();
   rb_green = rb_ary_new();
