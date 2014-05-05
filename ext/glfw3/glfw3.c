@@ -450,7 +450,7 @@ static VALUE rb_monitor_get_gamma_ramp(VALUE self)
   const GLFWgammaramp *ramp = NULL;
   VALUE rb_gamma_hash, rb_red, rb_green, rb_blue;
   unsigned int ramp_index;
-  unsigned int ramp_len = ramp->size;
+  unsigned int ramp_len;
 
   Data_Get_Struct(self, GLFWmonitor, monitor);
   ramp = glfwGetGammaRamp(monitor);
@@ -458,6 +458,7 @@ static VALUE rb_monitor_get_gamma_ramp(VALUE self)
   if (ramp == NULL) {
     return Qnil;
   }
+  ramp_len = ramp->size;
 
   rb_gamma_hash  = rb_hash_new();
   rb_red   = rb_ary_new();
