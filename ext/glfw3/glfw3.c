@@ -379,7 +379,7 @@ static VALUE rb_monitor_video_modes(VALUE self)
   modes = glfwGetVideoModes(monitor, &num_modes);
 
   for (; mode_index < num_modes; ++mode_index) {
-    ALLOC(GLFWvidmode);
+    mode = ALLOC(GLFWvidmode);
     *mode = modes[mode_index];
     rb_mode = Data_Wrap_Struct(s_glfw_videomode_klass, 0, free, mode);
     rb_obj_call_init(rb_mode, 0, 0);
